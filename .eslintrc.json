@@ -1,0 +1,38 @@
+
+{
+  "extends": [
+    "react-app",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": 1,
+    "react/prop-types": 0,
+    "prefer-destructuring": 0,
+    "no-underscore-dangle": 0,
+    "import/prefer-default-export": 0,
+    "no-async-promise-executor": 0,
+    "no-unused-vars": 1,
+    "no-console": [1, { "allow": ["warn", "error", "trace"] }],
+    "no-param-reassign": ["error", { "props": false }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src", "src/state"]
+      },
+      "webpack": {
+        "config": "config/webpack.config.js"
+      }
+    }
+  },
+  "env": {
+    "jest": true,
+    "browser": true,
+    "es6": true,
+    "node": true
+  }
+}
