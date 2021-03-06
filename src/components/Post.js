@@ -74,7 +74,9 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
   const handlePostComment = () => {
     setComments((prevComments) => {
       return [...prevComments, commentText];
-    }).then(() => setCommentText(""));
+    });
+
+    setCommentText("");
   };
 
   return (
@@ -95,7 +97,7 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
       {/* add comment */}
       {/* add comment */}
       {comments.map((comment, index) => (
-        <div key={comment}>{comment}</div>
+        <div key={comment + index}>{comment}</div>
       ))}
       <AddCommentContainer>
         {/* input */}
