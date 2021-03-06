@@ -17,7 +17,8 @@
     "no-async-promise-executor": 0,
     "no-unused-vars": 1,
     "no-console": [1, { "allow": ["warn", "error", "trace"] }],
-    "no-param-reassign": ["error", { "props": false }]
+    "no-param-reassign": ["error", { "props": false }],
+    "no-multiple-empty-lines": [2, { "max": 2, "maxEOF": 0 }]
   },
   "settings": {
     "import/resolver": {

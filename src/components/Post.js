@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
+import Skeleton from 'react-loading-skeleton';
 
 const PostContainer = styled.div`
   width: 400px;
@@ -81,6 +82,7 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
 
   return (
     <PostContainer>
+      
       {/* Header */}
       <PostHeader>
         <Avatar alt={username} src={avatarUrl}>
@@ -108,7 +110,9 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
         {/* post button */}
         <PostButton type="text" onClick={handlePostComment}>
           Post
+         
         </PostButton>
+        <Skeleton count={5}/>
       </AddCommentContainer>
     </PostContainer>
   );
