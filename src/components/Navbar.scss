@@ -1,0 +1,64 @@
+.Navbar {
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  height: 60px;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+
+  & > .UtilContainer {
+    align-items: center;
+    display: flex;
+    height: inherit;
+  }
+
+  &__Brand {
+    color: var(--grey-800);
+    height: fit-content;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    user-select: none;
+
+    &:hover {
+      color: var(--grey-900);
+    }
+  }
+
+  &__Link {
+    color: var(--grey-700);
+    margin-right: 15px;
+
+    &:hover {
+      color: var(--grey-900);
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &--Active,
+    &--Active:hover {
+      color: var(--grey-900);
+    }
+
+    & > svg {
+      height: auto;
+      width: 25px;
+    }
+  }
+
+  &__List {
+    flex: 1;
+
+    &--Center {
+      text-align: center;
+    }
+
+    &--Right {
+      text-align: right;
+    }
+  }
+}

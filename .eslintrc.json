@@ -9,7 +9,7 @@
   ],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": 1,
+    "prettier/prettier": 0,
     "react/prop-types": 0,
     "prefer-destructuring": 0,
     "no-underscore-dangle": 0,
@@ -17,7 +17,8 @@
     "no-async-promise-executor": 0,
     "no-unused-vars": 1,
     "no-console": [1, { "allow": ["warn", "error", "trace"] }],
-    "no-param-reassign": ["error", { "props": false }]
+    "no-param-reassign": ["error", { "props": false }],
+    "quotes": ["error", "single"]
   },
   "settings": {
     "import/resolver": {
