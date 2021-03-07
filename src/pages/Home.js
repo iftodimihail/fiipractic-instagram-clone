@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
 import Post from "components/Post";
+import AddPost from "components/AddPost";
 
 const AppContainer = styled.div`
   display: flex;
@@ -24,6 +25,14 @@ const Header = styled.div`
 `;
 
 function Home() {
+  const [posts, setPosts] = useState([]);
+
+  const getNewPost = (postData) => {
+    setPosts((prevPosts) => {
+      return [...prevPosts, postData];
+    });
+  };
+
   return (
     <AppContainer>
       {/* header */}
@@ -31,7 +40,10 @@ function Home() {
         <img src={instagramLogo} alt="Logo" />
       </Header>
       {/* {list of posts} */}
-      <Post />
+      {posts.map((postUsername, index) => (
+        <Post key={posts + index} username={postUsername} />
+      ))}
+      <AddPost parentCallback={getNewPost} />
     </AppContainer>
   );
 }

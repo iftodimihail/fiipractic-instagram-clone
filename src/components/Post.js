@@ -7,6 +7,7 @@ import { Button, Input } from "antd";
 const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
+  margin: 12px;
 `;
 
 const PostHeader = styled.div`
