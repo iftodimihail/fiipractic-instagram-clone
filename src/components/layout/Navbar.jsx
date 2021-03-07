@@ -1,6 +1,7 @@
 import React from 'react';
 import {Nav, Form, FormControl, Button, Navbar, NavDropdown} from 'react-bootstrap';
 import logo from '../../assets/instaLogo.png';
+import {Home, Send, Compass, Heart} from 'react-feather';
 
 const NavbarComponent = () => {
 
@@ -18,14 +19,21 @@ const NavbarComponent = () => {
                     </Form>
                 </Nav>
                 <Nav className="ml-0">
-                    <Nav.Link href="#link">Link</Nav.Link>
-                    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                    </NavDropdown>
+                    <Nav.Link href="#link">
+                        <Home strokeWidth={1.5}/>
+                    </Nav.Link>
+                    <Nav.Link href="#link">
+                        <Send strokeWidth={1.5}/>
+                    </Nav.Link>
+                    <Nav.Link href="#link">
+                        <Compass strokeWidth={1.5}/>
+                    </Nav.Link>
+                    <Nav.Link href="#link">
+                        <Heart strokeWidth={1.5}/>
+                    </Nav.Link>
+                    <Nav.Link href="#link">
+                        <img src="https://hbimg.huabanimg.com/fa75af2c4dece37248d6d8027d9ce37d48bc273c17e48-uEXjis_fw658/format/webp" alt="profile" width="26px" height="25px" style={{borderRadius: '50%'}}/>
+                    </Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </div>

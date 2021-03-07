@@ -1,16 +1,16 @@
 import React from "react";
 import Home from "pages/Home";
-import "./App.css";
+import Layout from 'components/layout/Layout';
 
 function App() {
   return (
-    <div className="App">
+    <Layout>
       {/* home */}
       <Home />
       {/* login */}
       {/* sign-up */}
       {/* my-profile */}
-    </div>
+    </Layout>
   );
 }
 

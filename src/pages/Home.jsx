@@ -1,23 +1,31 @@
 import React from "react";
-import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
-import Post from "components/Post";
-import Skeleton from 'react-loading-skeleton';
-import Layout from '../components/layout/Layout';
-
-// const AppContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-//   flex-direction: column;
-// `;
+import Card from '../components/Card';
+import Posts from 'components/Posts';
 
 function Home() {
   return (
     <>
-    <Layout>
-      <Skeleton count={5}/>
-      <Post username="mihai" />
-    </Layout>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-7 col-md-8 col-sm-12 col-xs-12">
+            <Card>
+              Stories here
+            </Card>
+            <Posts/>
+          </div>
+          <div className="col-lg-5 col-md-4 col-sm-12 col-xs-12">
+            <Card>
+              Your profile
+            </Card>
+            <Card>
+              Suggestions For You
+            </Card>
+            <Card>
+              Useful links and credits
+            </Card>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
