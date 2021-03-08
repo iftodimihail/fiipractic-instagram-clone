@@ -1,25 +1,25 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import styled from "styled-components";
-import {Avatar, Input, Button} from "antd";
+import { Avatar, Input, Button } from "antd";
 import instagramLogo from "assets/instaLogo.png";
 
 const PostContainer = styled.div`
-width: 400px;
-border: 1px solid lightgray;
-border-radiud: 4px;
+  width: 400px;
+  border: 1px solid lightgray;
+  border-radiud: 4px;
 `;
 
 const PostHeader = styled.div`
-display: flex;
-align-items: center;
-justify-content: flex-start;
-padding: 20px;
-border-bottom: 1px solid lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  border-bottom: 1px solid lightgray;
 `;
 
 const UsernameText = styled.span`
-    font-weight: 600;
-    margin-left: 10px;
+  font-weight: 600;
+  margin-left: 10px;
 `;
 
 const ImageContainer = styled.div`
@@ -36,64 +36,77 @@ align-items: center;
 `;
 
 const AddCommentContainer = styled.div`
-position: relative;
-display: flex;
+  position: relative;
+  display: flex;
 `;
 
 const CommentInput = styled(Input)`
-border: 0;
-border-radius: 0;
-border-top: 1px solid lightgray;
-padding: 10px 50px 10px 10px;
+  border: 0;
+  border-radius: 0;
+  border-top: 1px solid lightgray;
+  padding: 10px 50px 10px 10px;
 
-:hover, :focus{
+  :hover,
+  :focus {
     border-color: transparent;
     box-shadow: none;
-} 
+  }
 `;
 
 const PostButton = styled(Button)`
-position: absolute;
-right: 0;
-padding: 0 10px 0 5px;
-height: 100%;
+  position: absolute;
+  right: 0;
+  padding: 0 10px 0 5px;
+  height: 100%;
 
-:hover, :focus{
+  :hover,
+  :focus {
     background-color: transparent;
     color: #5094ce;
-} 
+  }
 `;
 
-function Post({username = "Diana", avatarUrl, imageUrl = instagramLogo}){
-    const [commentText, setCommentText] =  useState();
-    const [comments, setComments] = useState([]);
+function Post({ username = "Diana", avatarUrl, imageUrl = instagramLogo }) {
+  const [commentText, setCommentText] = useState();
+  const [comments, setComments] = useState([]);
 
-    const handlePostComments = () => {
-        setComments((prevComments) => {return [...prevComments, commentText]})
-        setCommentText("");
-    }
-    return (
-        <PostContainer>
-            <PostHeader>
-                <Avatar alt={username} src={avatarUrl}>{username[0].toUpperCase()}</Avatar>
-                <UsernameText>{username}</UsernameText>
-            </PostHeader>
-            <ImageContainer>
-                <img src={imageUrl} alt="post"/>
-            </ImageContainer>
-            {/* Header */}
-            {/* image */}
-            {/* Action menu */}
-            {/* Number of likes */}
-            {/* comments section */}
-            {/* add comment */}
-            {comments.map((comment) => <div key={comment}>{comment}</div>)}
-            <AddCommentContainer>
-            <CommentInput value={commentText} onChange={(event) => setCommentText(event.target.value)}/>
-            <PostButton type="text" onClick={handlePostComments}>Post</PostButton>
-            </AddCommentContainer>
-        </PostContainer>
-    );
+  const handlePostComments = () => {
+    setComments((prevComments) => {
+      return [...prevComments, commentText];
+    });
+    setCommentText("");
+  };
+  return (
+    <PostContainer>
+      <PostHeader>
+        <Avatar alt={username} src={avatarUrl}>
+          {username[0].toUpperCase()}
+        </Avatar>
+        <UsernameText>{username}</UsernameText>
+      </PostHeader>
+      <ImageContainer>
+        <img src={imageUrl} alt="post"/>
+      </ImageContainer>
+      {/* Header */}
+      {/* image */}
+      {/* Action menu */}
+      {/* Number of likes */}
+      {/* comments section */}
+      {/* add comment */}
+      {comments.map((comment) => (
+        <div key={comment}>{comment}</div>
+      ))}
+      <AddCommentContainer>
+        <CommentInput
+          value={commentText}
+          onChange={(event) => setCommentText(event.target.value)}
+        />
+        <PostButton type="text" onClick={handlePostComments}>
+          Post
+        </PostButton>
+      </AddCommentContainer>
+    </PostContainer>
+  );
 }
 
 export default Post;
