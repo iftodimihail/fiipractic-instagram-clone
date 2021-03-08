@@ -59,7 +59,6 @@ const FontIcon = styled(FontAwesomeIcon)`
 const CommentInput = styled(Input)`
   border: 0;
   border-radius: 0;
-  border-top: 1px solid lightgray;
   padding: 10px 50px 10px 10px;
 
   :hover,
