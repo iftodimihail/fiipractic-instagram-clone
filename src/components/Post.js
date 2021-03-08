@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Avatar, Input, Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSmile } from "@fortawesome/free-regular-svg-icons";
+import {
+  faSmile,
+  faHeart,
+  faComment,
+  faPaperPlane,
+  faBookmark,
+} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import profile from "../assets/profile.jpg";
 
@@ -81,6 +87,20 @@ const PostButton = styled(Button)`
   }
 `;
 
+const ReactionsContainer = styled.div`
+  display: flex;
+  flex-directions: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 5px;
+  margin-right: 10px;
+
+  svg {
+    margin: 0 5px;
+    margin-top: 11px;
+  }
+`;
+
 const Post = ({ userName, avatarUrl = profile, points, post }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
@@ -113,6 +133,16 @@ const Post = ({ userName, avatarUrl = profile, points, post }) => {
       {comments.map((comment, index) => (
         <div key={comment + index}>{comment}</div>
       ))}
+      <ReactionsContainer>
+        <div>
+          <FontIcon icon={faHeart} />
+          <FontIcon icon={faComment} />
+          <FontIcon icon={faPaperPlane} />
+        </div>
+        <div>
+          <FontIcon icon={faBookmark} />
+        </div>
+      </ReactionsContainer>
       <AddCommentContainer>
         <FontIcon icon={faSmile} />
         <CommentInput
