@@ -1,0 +1,4 @@
+export const CONSTANTS = {
+  CREATE_POST: "CREATE_POST",
+  POST_COMMENT: "POST_COMMENT",
+};
