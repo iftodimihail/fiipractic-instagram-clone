@@ -7,6 +7,7 @@ const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
+  margin-bottom: 20px;
 `;
 
 const PostHeader = styled.div`

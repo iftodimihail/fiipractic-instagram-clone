@@ -18,7 +18,7 @@ function PostForm({ addNewPost }) {
 
   const handleAddPost = () => {
     if (username !== "") {
-      addNewPost(username);
+      addNewPost({ username: username });
       setUsername("");
     }
   };
@@ -29,7 +29,7 @@ function PostForm({ addNewPost }) {
         placeholder="username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-      ></PostInput>
+      />
       <PostButton onClick={handleAddPost}>Add post</PostButton>
     </PostFormContainer>
   );

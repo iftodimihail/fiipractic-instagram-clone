@@ -27,9 +27,9 @@ const Header = styled.div`
 function Home() {
   const [posts, setPosts] = useState([{ id: 1, username: "Maria" }]);
 
-  const addNewPost = (value) => {
+  const addNewPost = (postContent) => {
     let id = posts.length >= 0 ? posts[0].id + 1 : 1;
-    let post = { id: id, username: value };
+    let post = { id: id, username: postContent.username };
     setPosts((prevPosts) => {
       return [post, ...prevPosts];
     });
