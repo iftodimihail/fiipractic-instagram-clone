@@ -48,7 +48,7 @@ const CommentInput = styled(Input)`
 
   :hover,
   :focus {
-    border-color: none;
+    border-color: lightgray;
     box-shadow: none;
   }
 `;
