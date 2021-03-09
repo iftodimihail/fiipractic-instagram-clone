@@ -67,7 +67,7 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username, avatarUrl, imageUrl = instaLogo }) {
+function Post({ id, username, avatarUrl, imageUrl = instaLogo }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
