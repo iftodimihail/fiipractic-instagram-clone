@@ -101,10 +101,7 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
       ))}
       <AddCommentContainer>
         {/* input */}
-        <CommentInput
-          value={commentText}
-          onChange={(event) => setCommentText(event.target.value)}
-        />
+        <CommentInput value={commentText} onChange={(event) => setCommentText(event.target.value)}/>
         {/* post button */}
         <PostButton type="text" onClick={handlePostComment}>
           Post
