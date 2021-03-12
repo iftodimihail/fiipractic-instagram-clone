@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsisH, faCircle, faComment, faBookmark} from '@fortawesome/free-solid-svg-icons'
+import { faHeart as farHeart, faCircle as farCircle } from '@fortawesome/free-regular-svg-icons';
 
 const PostContainer = styled.div`
-  width: 400px;
+  widht: 100%;
+  max-width: 600px;
   border: 1px solid lightgray;
   border-radius: 4px;
+  margin: 20px;
 `;
 
 const PostHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 20px;
   border-bottom: 1px solid lightgray;
+`;
+
+const Username = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const UsernameText = styled.span`
@@ -33,6 +42,19 @@ const ImageContainer = styled.div`
     width: 100%;
     object-fit: contain;
   }
+`;
+
+const ActionMenu = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 7px;
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
+`;
+
+const ActionPart = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const AddCommentContainer = styled.div`
@@ -66,7 +88,7 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
+function Post({ username, avatarUrl, imageUrl}) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -83,15 +105,37 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
     <PostContainer>
       {/* Header */}
       <PostHeader>
-        <Avatar alt={username} src={avatarUrl}>
-          {username[0].toUpperCase()}
-        </Avatar>
-        <UsernameText>{username}</UsernameText>
+        
+        <Username>
+          <Avatar alt={username} src={avatarUrl}>
+            {username[0].toUpperCase()}
+          </Avatar>
+          <UsernameText>{username}</UsernameText>
+        </Username>
+
+        <FontAwesomeIcon icon={ faEllipsisH }/>
       </PostHeader>
+      
       <ImageContainer>
         <img src={imageUrl} alt="post" />
       </ImageContainer>
-      {/* action menu */}
+      
+      <ActionMenu>
+        <ActionPart>
+          <FontAwesomeIcon icon={ farHeart } style={{marginRight: 5}} size='2x' color='red'/>
+          <FontAwesomeIcon icon={ faComment } size='2x' color='grey'/>
+        </ActionPart>
+        
+        <ActionPart>
+          <FontAwesomeIcon icon={ faCircle } style={{marginRight: 5}} />
+          <FontAwesomeIcon icon={ faCircle } style={{marginRight: 5}} color='grey'/>
+          <FontAwesomeIcon icon={ faCircle } color='grey'/>
+        </ActionPart>
+          
+        <ActionPart>
+          <FontAwesomeIcon icon={ faBookmark } size='2x' color='gold'/>
+        </ActionPart>
+      </ActionMenu>
       {/* nr of likes */}
       {/* comment section */}
       {/* add comment */}
