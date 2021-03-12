@@ -7,6 +7,7 @@ const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
+  margin-bottom: 10px;
 `;
 
 const PostHeader = styled.div`
@@ -48,7 +49,7 @@ const CommentInput = styled(Input)`
 
   :hover,
   :focus {
-    border-color: transparent;
+    border-color: lightgray;
     box-shadow: none;
   }
 `;
