@@ -19,7 +19,7 @@ function DropFownMenu({ username, openUploadModal }) {
     </Menu>
   );
   return <Dropdown overlay = {menu} trigger = {["click"]}>
-      <span>{username}</span>
+      <Username>{username}</Username>
   </Dropdown>
 }
 
