@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Input, Button } from "antd";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
 import Post from "components/Post";
+import { auth, db } from "utils/firebase";
+import DropdownMenu from "components/DropdownMenu";
+import UploadModal from "components/UploadModal";
 
 const AppContainer = styled.div`
   display: flex;
@@ -12,77 +14,64 @@ const AppContainer = styled.div`
 
 const Header = styled.div`
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   padding: 12px;
   border-bottom: 1px solid lightgray;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  background-color: white;
 
   img {
     height: 40px;
     object-fit: contain;
-  }
-`;
-
-const AddPostContainer = styled.div`
-  width: 400px;
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 10px;
-
-  * + * {
-    margin-left: 10px;
-  }
-`;
-
-const PostInput = styled(Input)``;
-
-const PostButton = styled(Button)`
-  background-color: transparent;
-  color: #5094ce;
-  border: 1px solid #5094ce;
-
-  :hover,
-  :focus {
-    background-color: transparent;
-    color: #5094ce;
-    border: 1px solid #5094ce;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 `;
 
 function Home() {
-  const [usernameText, setUsernameText] = useState("");
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState();
+  const [isOpenedModal, setIsOpenedModal] = useState(false);
 
-  const handlePostUsername = () => {
-    if (usernameText.length) {
-      setPosts((prevPosts) => {
-        return [usernameText, ...prevPosts];
-      });
-    }
-  };
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      setUser(authUser);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  useEffect(() => {
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) =>
+        setPosts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+      );
+  }, []);
 
   return (
     <AppContainer>
-      {/*header*/}
       <Header>
         <img src={instagramLogo} alt="instagram logo" />
-      </Header>
-      {/*list of posts*/}
-      <AddPostContainer>
-        <PostInput
-          placeholder="Username"
-          value={usernameText}
-          onChange={(event) => setUsernameText(event.target.value)}
+        <DropdownMenu
+          username={user?.displayName}
+          openUploadModal={() => setIsOpenedModal(true)}
         />
-        <PostButton type="text" onClick={handlePostUsername}>
-          Add Post
-        </PostButton>
-      </AddPostContainer>
-      {posts.map((username, index) => (
-        <Post key={username + index} username={username} />
+      </Header>
+      {posts.map((post) => (
+        <Post key={post.id} {...post} />
       ))}
+      <UploadModal
+        isOpened={isOpenedModal}
+        setIsOpen={setIsOpenedModal}
+        username={user?.displayName}
+      />
     </AppContainer>
   );
 }

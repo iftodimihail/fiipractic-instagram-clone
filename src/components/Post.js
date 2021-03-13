@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
 
 const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 const PostHeader = styled.div`
@@ -43,7 +42,7 @@ const AddCommentContainer = styled.div`
 
 const CommentInput = styled(Input)`
   border: 0;
-  border-radius: 0;
+  border-radius: 0 0 4px 4px;
   border-top: 1px solid lightgray;
   padding: 10px 50px 10px 10px;
 
@@ -67,7 +66,15 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
+const Caption = styled.div`
+  padding: 10px;
+
+  strong {
+    margin-right: 5px;
+  }
+`;
+
+function Post({ username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setcomments] = useState([]);
 
@@ -93,6 +100,10 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
       </ImageContainer>
       {/* action menu */}
       {/* nr of likes */}
+      <Caption>
+        <strong>{username}</strong>
+        {caption}
+      </Caption>
       {/* comment section */}
       {/* add comment */}
       {comments.map((comment, index) => (
