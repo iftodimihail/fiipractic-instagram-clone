@@ -67,7 +67,14 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username = "Catalin", avatarUrl, imageUrl = instagramLogo }) {
+const Caption = styled.div`
+  padding: 10px;
+  strong {
+    margin-right: 5px;
+  }
+`;
+
+function Post({username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -85,12 +92,19 @@ function Post({ username = "Catalin", avatarUrl, imageUrl = instagramLogo }) {
         </Avatar>
         <UsernameText>{username}</UsernameText>
       </PostHeader>
+
       <ImageContainer>
         <img src={imageUrl} alt="Post" />
       </ImageContainer>
+      
+      <Caption>
+        <strong>{username}</strong>
+        {caption}
+      </Caption>
       {comments.map((comment, index) => (
         <div key={comment + index}>{comment}</div>
       ))}
+      
       <AddCommentContainer>
         <CommentInput
           value={commentText}
@@ -101,13 +115,6 @@ function Post({ username = "Catalin", avatarUrl, imageUrl = instagramLogo }) {
         </PostButton>
       </AddCommentContainer>
 
-      <div>
-        {/* Header */}
-        {/* image */}
-        {/* action menu */}
-        {/* nr of likes */}
-        {/* add comment */}
-      </div>
     </PostContainer>
   );
 }
