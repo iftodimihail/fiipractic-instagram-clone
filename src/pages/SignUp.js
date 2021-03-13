@@ -4,6 +4,10 @@ import instaLogo from "assets/instaLogo.png";
 import { Button, Input } from "antd";
 import { auth } from "utils/firebase";
 import { useHistory } from "react-router";
+import Header from "components/Header";
+
+const SignupPage = styled.div`
+`
 
 const CenteredWrap = styled.div`
   height: 100%;
@@ -61,42 +65,40 @@ function SignUp() {
   };
 
   return (
-    <CenteredWrap>
-      <SignUpcontainer>
-        <LogoContainer>
-          <img src={instaLogo} alt="instagram logo" />
-        </LogoContainer>
-        <Input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+    <SignupPage>
+      <Header></Header>
+      <CenteredWrap>
+        <SignUpcontainer>
+          <LogoContainer>
+            <img src={instaLogo} alt="instagram logo" />
+          </LogoContainer>
+          <Input
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <Input
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          autoComplete="username"
-        />
-        <Input
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          autoComplete="new-password"
-        />
-        <Error>{errorMessage}</Error>
-        <Button type="primary" onClick={handleSignUp}>
-          Sign Up
-        </Button>
-      </SignUpcontainer>
-      {/* instagramlogo */}
-      {/* username */}
-      {/* email */}
-      {/* password */}
-      {/* buton signup */}
-    </CenteredWrap>
+          <Input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            autoComplete="username"
+          />
+          <Input
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            autoComplete="new-password"
+          />
+          <Error>{errorMessage}</Error>
+          <Button type="primary" onClick={handleSignUp}>
+            Sign Up
+          </Button>
+        </SignUpcontainer>
+      </CenteredWrap>
+    </SignupPage>
   );
 }
 
