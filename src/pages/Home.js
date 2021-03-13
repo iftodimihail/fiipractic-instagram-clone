@@ -1,7 +1,9 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
 import Post from "components/Post";
+import Userbox from "components/Userbox"
 
 const AppContainer = styled.div`
   display: flex;
@@ -24,17 +26,36 @@ const Header = styled.div`
   }
 `;
 
+let users = ["Tudor", "Mihai", "Luca"];
+
+
+
 function Home() {
+  
+  const [Posts, setPosts] = useState([]);
+  const [UserName, setUserName] = useState("");
+  function AddPost(arg){
+    if(arg.length>=1)
+    setPosts([...Posts, arg]);
+  }
+
   return (
     <AppContainer>
-      {/* header */}
       <Header>
         <img src={instagramLogo} alt="instagram logo" />
       </Header>
+
+      
+        <Userbox  addpostFunc = {AddPost}/>
+      
+
       {/* list of posts */}
-      <Post username="mihai" />
+      {Posts.map((element, index) => (
+        <div key={index}><Post username={element} /></div>
+      ))}
     </AppContainer>
   );
 }
+
 
 export default Home;

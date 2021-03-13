@@ -4,6 +4,7 @@ import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
 
 const PostContainer = styled.div`
+  margin-bottom: 10px;
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
@@ -97,7 +98,9 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
       {/* add comment */}
       {/* add comment */}
       {comments.map((comment, index) => (
-        <div key={comment + index}>{comment}</div>
+
+        <div key={comment + index}> {comment} </div>
+        
       ))}
       <AddCommentContainer>
         {/* input */}
