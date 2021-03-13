@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
 
 const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
+  margin-bottom: 20px;
 `;
 
 const PostHeader = styled.div`
@@ -28,7 +28,6 @@ const ImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   img {
     width: 100%;
     object-fit: contain;
@@ -45,10 +44,11 @@ const CommentInput = styled(Input)`
   border-radius: 0;
   border-top: 1px solid lightgray;
   padding: 10px 50px 10px 10px;
-
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   :hover,
   :focus {
-    border-color: none;
+    border-color: lightgray;
     box-shadow: none;
   }
 `;
@@ -58,7 +58,6 @@ const PostButton = styled(Button)`
   right: 0;
   padding: 0 10px 0 5px;
   height: 100%;
-
   :hover,
   :focus {
     background-color: transparent;
@@ -66,7 +65,14 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
+const Caption = styled.div`
+  padding: 10px;
+  strong {
+    margin-right: 5px;
+  }
+`;
+
+function Post({ username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -93,15 +99,21 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
       </ImageContainer>
       {/* action menu */}
       {/* nr of likes */}
+      <Caption>
+        <strong>{username}</strong>
+        {caption}
+      </Caption>
       {/* comment section */}
-      {/* add comment */}
       {/* add comment */}
       {comments.map((comment, index) => (
         <div key={comment + index}>{comment}</div>
       ))}
       <AddCommentContainer>
         {/* input */}
-        <CommentInput value={commentText} onChange={(event) => setCommentText(event.target.value)}/>
+        <CommentInput
+          value={commentText}
+          onChange={(event) => setCommentText(event.target.value)}
+        />
         {/* post button */}
         <PostButton type="text" onClick={handlePostComment}>
           Post
