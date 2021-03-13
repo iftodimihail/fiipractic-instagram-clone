@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
 
 const PostContainer = styled.div`
   width: 400px;
