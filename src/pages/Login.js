@@ -53,10 +53,7 @@ function Login() {
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(async (authUser) => {
-        await authUser.user.updateProfile({
-          displayName: "user",
-        });
+      .then(async () => {
         history.push("/");
       })
       .catch((err) => setErrorMessage(err.message));

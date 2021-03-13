@@ -41,8 +41,9 @@ function Header() {
     <HeaderComponent>
       <img src={instagramLogo} alt="instagram logo"></img>
       <DropFownMenu
-        username={user?.displayName}
+        username={user ? user.displayName : "Menu"}
         openUploadModal={() => setIsOpenedModal(true)}
+        isLogged = {user ? true : false}
       />
       <UploadModal
         isOpened={isOpenedModal}
