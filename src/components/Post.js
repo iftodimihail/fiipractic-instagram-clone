@@ -7,6 +7,7 @@ const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
+  margin-bottom: 20px;
 `;
 
 const PostHeader = styled.div`
@@ -66,7 +67,14 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
+const Caption = styled.div`
+  padding: 10px;
+  strong {
+    margin-right: 10px;
+  }
+`;
+
+function Post({ username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -93,6 +101,10 @@ function Post({ username, avatarUrl, imageUrl = instagramLogo }) {
       </ImageContainer>
       {/* action menu */}
       {/* nr of likes */}
+      <Caption>
+        <strong>{username}</strong>
+        {caption}
+      </Caption>
       {/* comment section */}
       {/* add comment */}
       {/* add comment */}
