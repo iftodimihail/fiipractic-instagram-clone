@@ -24,14 +24,14 @@ function UploadModal({ isOpened, setIsOpen, username }) {
   };
 
   const handleUpload = () => {
-    const imageName = `${file.name}_${nanoid()}`;   
+    const imageName = `${nanoid()}_${file.name}`;   
     const uploadtask = storage.ref(`images/${imageName}`).put(file);
     
     uploadtask.on(
-      "state_changed",
+      firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
         const progress = Math.round(
-          (snapshot.bytesTransfered / snapshot.totalBytes) * 100
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
         setProgress(progress);
       },

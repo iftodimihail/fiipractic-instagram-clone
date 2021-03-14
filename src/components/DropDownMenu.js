@@ -22,8 +22,7 @@ function LogInOut(isLogged, createLogout, item) {
         Sign out
       </Menu.Item>
     );
-  }
-  else if (!isLogged)
+  } else if (!isLogged)
     return (
       <Menu.Item
         key={item}
@@ -36,17 +35,44 @@ function LogInOut(isLogged, createLogout, item) {
     );
 }
 
-function DropFownMenu({ username, openUploadModal, isLogged }) {
-  const menu = (
+function ValidMenu(isLoggedIn, openUploadModal) {
+  const history = useHistory();
+  if (isLoggedIn)
+    return (
+      <Menu>
+        <Menu.Item key="upload" onClick={openUploadModal}>
+          Upload
+        </Menu.Item>
+        <Menu.Item key="logout" onClick={() => auth.signOut()}>
+          Sign out
+        </Menu.Item>
+      </Menu>
+    );
+  return (
     <Menu>
-      <Menu.Item key="upload" onClick={openUploadModal}>
-        Upload
+      <Menu.Item
+        key={"login"}
+        onClick={() => {
+          history.push(`/${"login"}`);
+        }}
+      >
+        Login
       </Menu.Item>
-      {LogInOut(isLogged, true, "login")}
-      {/* in cazul in care userul e deja logat sa nu creeze de doua ori butonul de logout */}
-      {LogInOut(isLogged, false, "signup")}
+      <Menu.Item
+        key={"signup"}
+        onClick={() => {
+          history.push(`/${"signup"}`);
+        }}
+      >
+        Register
+      </Menu.Item>
     </Menu>
   );
+}
+
+function DropFownMenu({ username, openUploadModal, isLoggedIn }) {
+  const menu = ValidMenu(isLoggedIn, openUploadModal);
+
   return (
     <Dropdown overlay={menu} trigger={["click"]}>
       <Username>{username}</Username>

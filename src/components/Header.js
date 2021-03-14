@@ -43,7 +43,7 @@ function Header() {
       <DropFownMenu
         username={user ? user.displayName : "Menu"}
         openUploadModal={() => setIsOpenedModal(true)}
-        isLogged = {user ? true : false}
+        isLoggedIn = {user ? true : false}
       />
       <UploadModal
         isOpened={isOpenedModal}
