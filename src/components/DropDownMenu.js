@@ -6,34 +6,8 @@ import { useHistory } from "react-router";
 
 const Username = styled.span`
   cursor: pointer;
+  font-weight: bold;
 `;
-
-function PushText(str) {
-  if (str == "login") return "Login";
-  if (str == "signup") return "Register";
-  return null;
-}
-
-function LogInOut(isLogged, createLogout, item) {
-  const history = useHistory();
-  if (isLogged && createLogout) {
-    return (
-      <Menu.Item key="logout" onClick={() => auth.signOut()}>
-        Sign out
-      </Menu.Item>
-    );
-  } else if (!isLogged)
-    return (
-      <Menu.Item
-        key={item}
-        onClick={() => {
-          history.push(`/${item}`);
-        }}
-      >
-        {PushText(item)}
-      </Menu.Item>
-    );
-}
 
 function ValidMenu(isLoggedIn, openUploadModal) {
   const history = useHistory();
