@@ -1,13 +1,13 @@
 import { Avatar } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
-import instaLogo from "assets/instaLogo.png";
 import { Input, Button } from "antd";
 
 const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
+  margin-bottom: 10px;
 `;
 
 const PostHeader = styled.div`
@@ -64,7 +64,7 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username = "John Doe", avatarUrl, imageUrl = instaLogo }) {
+function Post({ username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const HandlePostComment = () => {
@@ -86,6 +86,7 @@ function Post({ username = "John Doe", avatarUrl, imageUrl = instaLogo }) {
       <ImageContainer>
         <img src={imageUrl} alt="post" />
       </ImageContainer>
+      {caption}
       {/*  Nr of likes */}
       {/*  Comments Section */}
       {/*  Add Comment */}
