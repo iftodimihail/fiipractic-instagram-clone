@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Avatar } from "antd";
-import { connect } from "react-redux";
 
 import {
   AddCommentContainer,
   CommentInput,
   PostButton,
 } from "utils/myStyledComponents";
-import instaLogo from "assets/instaLogo.png";
-import { postComment } from "redux/actions";
 
 const PostContainer = styled.div`
   width: 400px;
@@ -44,20 +41,18 @@ const ImageContainer = styled.div`
   }
 `;
 
+const Caption = styled.div`
+  padding: 10px;
+
+  strong {
+    margin-right: 10px;
+  }
+`;
+
 const Post = (props) => {
   const [commentText, setCommentText] = useState("");
 
-  const {
-    username = "Lucian",
-    avatarUrl,
-    imageUrl = instaLogo,
-    comments,
-  } = props.post;
-
-  const handlePostComment = () => {
-    props.postComment(username, commentText);
-    setCommentText("");
-  };
+  const { username, caption, avatarUrl, imageUrl } = props;
 
   return (
     <PostContainer>
@@ -78,11 +73,11 @@ const Post = (props) => {
 
       {/* Action menu */}
       {/* Likes */}
+      <Caption>
+        <strong>{username}</strong>
+        {caption}
+      </Caption>
       {/* Comment section */}
-
-      {comments.map((comment, index) => (
-        <div key={comment + index}>{comment}</div>
-      ))}
 
       {/* Add comment */}
 
@@ -91,7 +86,7 @@ const Post = (props) => {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
-        <PostButton type="text" onClick={handlePostComment}>
+        <PostButton type="text" onClick={() => {}}>
           Post
         </PostButton>
       </AddCommentContainer>
@@ -99,4 +94,4 @@ const Post = (props) => {
   );
 };
 
-export default connect(null, { postComment })(Post);
+export default Post;
