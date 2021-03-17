@@ -6,9 +6,18 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.1",
+    "ant": "^0.2.0",
+    "antd": "^4.13.1",
+    "cli": "^1.0.1",
+    "firebase": "^8.3.0",
+    "history": "^5.0.0",
+    "nanoid": "^3.1.22",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "styled-components": "^5.2.1",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
@@ -38,6 +47,6 @@
   "devDependencies": {
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1"
+    "prettier": "2.2.1"
   }
 }
