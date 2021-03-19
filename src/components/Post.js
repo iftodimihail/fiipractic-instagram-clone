@@ -1,13 +1,12 @@
-import Avatar from "antd/lib/avatar/avatar";
-import { React, useState } from "react";
+import React, { useState } from "react";
+import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
-import { Button, Input } from "antd";
 
 const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
-  margin: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
 `;
 
 const PostHeader = styled.div`
@@ -30,7 +29,7 @@ const ImageContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  > img {
+  img {
     width: 100%;
     object-fit: contain;
   }
@@ -67,35 +66,49 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username = "Tiberiu", avatarUrl, imageUrl = instagramLogo }) {
+const Caption = styled.div`
+  padding: 10px;
+  strong {
+    margin-right: 10px;
+  }
+`;
+
+function Post({ username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
+  // ["coment 1", "comment2"];
   const handlePostComment = () => {
     setComments((prevComments) => {
       return [...prevComments, commentText];
     });
+
     setCommentText("");
   };
+
   return (
     <PostContainer>
       {/* Header */}
       <PostHeader>
         <Avatar alt={username} src={avatarUrl}>
-          {username?.[0]?.toUpperCase()}
+          {username[0].toUpperCase()}
         </Avatar>
         <UsernameText>{username}</UsernameText>
       </PostHeader>
-      {/* image */}
       <ImageContainer>
         <img src={imageUrl} alt="post" />
       </ImageContainer>
       {/* action menu */}
       {/* nr of likes */}
+      <Caption>
+        <strong>{username}</strong>
+        {caption}
+      </Caption>
       {/* comment section */}
       {/* add comment */}
+      {/* add comment */}
       {comments.map((comment, index) => (
-        <div key={comments + index}>{comment}</div>
+        <div key={comment + index}>{comment}</div>
       ))}
       <AddCommentContainer>
         {/* input */}
@@ -103,7 +116,6 @@ function Post({ username = "Tiberiu", avatarUrl, imageUrl = instagramLogo }) {
           value={commentText}
           onChange={(event) => setCommentText(event.target.value)}
         />
-
         {/* post button */}
         <PostButton type="text" onClick={handlePostComment}>
           Post
