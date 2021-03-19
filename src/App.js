@@ -1,9 +1,10 @@
 import React from "react";
-import Home from "pages/Home";
-import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { createBrowserHistory } from "history";
+
+import Home from "pages/Home";
 import SignUp from "pages/SignUp";
+import Login from "pages/Login";
+import { createBrowserHistory } from "history";
 
 const history = createBrowserHistory();
 
@@ -13,10 +14,12 @@ function App() {
       <Switch>
         {/* home */}
         <Route exact path="/" component={Home} />
-        {/*sign-up*/}
+        {/* login */}
+        <Route exact path="/login" component={Login} />
+        {/* sign-up */}
         <Route exact path="/signup" component={SignUp} />
-        {/*login*/}
-        {/*my-profile*/}
+
+        {/* my-profile */}
       </Switch>
     </Router>
   );

@@ -51,14 +51,14 @@ const CommentInput = styled(Input)`
   :hover,
   :focus {
     border-color: lightgray;
-    border-shadow: none;
+    box-shadow: none;
   }
 `;
 
 const PostButton = styled(Button)`
   position: absolute;
   right: 0;
-  padding: o 10px 0 5px;
+  padding: 0 10px 0 5px;
   height: 100%;
   :hover,
   :focus {
@@ -111,7 +111,6 @@ function Post({ username, avatarUrl, imageUrl, caption }) {
           value={commentText}
           onChange={(event) => setCommentText(event.target.value)}
         />
-        <Input />
         {/* post button */}
         <PostButton type="text" onClick={handlePostComment}>
           Post

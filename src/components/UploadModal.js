@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Input, Modal, Progress, Upload, message } from "antd";
+import { Input, message, Modal, Progress, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import firebase, { db, storage } from "utils/firebase";
 import { nanoid } from "nanoid";
 
 function UploadModal({ isOpened, setIsOpen, username }) {
-  const { Dragger } = Upload;
   const [file, setFile] = useState();
   const [photoCaption, setPhotoCaption] = useState("");
   const [progress, setProgress] = useState(0);
+
+  const { Dragger } = Upload;
+
   const uploadProps = {
     onRemove: () => {
       setFile(null);
@@ -21,31 +23,36 @@ function UploadModal({ isOpened, setIsOpen, username }) {
   };
 
   const handleUpload = () => {
-    const uploadTask = storage.ref(`images/${file.name}`).put(file);
+    const imageName = `${file.name}_${nanoid()}`;
+
+    const uploadTask = storage.ref(`images/${imageName}`).put(file);
+
     uploadTask.on(
       "stage_changed",
-      //progress function
+      // progress function
       (snapshot) => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
+
         setProgress(progress);
       },
-      //error function
-      (error) => message.error(`${file.name} failed to upload.`),
-      //complete function
+      // error function
+      (error) => message.error(`${imageName} failed to upload.`),
+      // complete function
       () => {
         storage
           .ref("images")
-          .child(file.name)
+          .child(imageName)
           .getDownloadURL()
-          .then.apply(async (imageUrl) => {
+          .then(async (imageUrl) => {
             await db.collection("posts").add({
               caption: photoCaption,
               imageUrl,
               username,
               timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             });
+
             setIsOpen(false);
             setPhotoCaption("");
             setFile();
@@ -57,10 +64,10 @@ function UploadModal({ isOpened, setIsOpen, username }) {
 
   return (
     <Modal
-      title="Upload Post"
+      title="Upload post"
       visible={isOpened}
       onCancel={() => setIsOpen(false)}
-      onOk={handleUpload()}
+      onOk={handleUpload}
     >
       <Input
         placeholder="Photo caption"
@@ -83,4 +90,5 @@ function UploadModal({ isOpened, setIsOpen, username }) {
     </Modal>
   );
 }
+
 export default UploadModal;
