@@ -26,6 +26,7 @@ const HeaderComponent = styled.div`
   }
 `;
 
+
 function Header() {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);

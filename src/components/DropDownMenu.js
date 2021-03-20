@@ -9,11 +9,19 @@ const Username = styled.span`
   font-weight: bold;
 `;
 
-function ValidMenu(isLoggedIn, openUploadModal) {
+function ValidMenu(isLoggedIn, openUploadModal, navigateToProfile) {
   const history = useHistory();
   if (isLoggedIn)
     return (
       <Menu>
+        <Menu.Item
+          key="myProfile"
+          onClick={() => {
+            history.push(`/${"profile"}`);
+          }}
+        >
+          Profile
+        </Menu.Item>
         <Menu.Item key="upload" onClick={openUploadModal}>
           Upload
         </Menu.Item>
