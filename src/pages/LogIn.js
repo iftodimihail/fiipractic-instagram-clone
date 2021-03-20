@@ -53,7 +53,7 @@ function LogIn() {
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(async (authUser) => history.push("/"))
+      .then(history.push("/"))
       .catch((err) => setErrorMessage(err.message));
   };
 
