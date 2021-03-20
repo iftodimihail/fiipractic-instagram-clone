@@ -9,7 +9,6 @@ import {
   faBookmark,
 } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import profile from "../assets/profile.jpg";
 
 const PostContainer = styled.div`
   width: 400px;
@@ -101,7 +100,14 @@ const ReactionsContainer = styled.div`
   }
 `;
 
-const Post = ({ userName, avatarUrl = profile, points, post }) => {
+const Caption = styled.div`
+  padding: 10px;
+  strong {
+    margin-right: 5px;
+  }
+`;
+
+const Post = ({ username, avatarUrl, imageUrl, caption, points }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -116,10 +122,10 @@ const Post = ({ userName, avatarUrl = profile, points, post }) => {
     <PostContainer>
       <PostHeader>
         <div>
-          <Avatar alt={userName} src={avatarUrl}>
-            {userName?.[0]?.toLocaleUpperCase()}
+          <Avatar alt={username} src={avatarUrl}>
+            {username?.[0]?.toLocaleUpperCase()}
           </Avatar>
-          <PostUserName>{userName}</PostUserName>
+          <PostUserName>{username}</PostUserName>
         </div>
         <div>
           <Points>
@@ -128,8 +134,12 @@ const Post = ({ userName, avatarUrl = profile, points, post }) => {
         </div>
       </PostHeader>
       <ImageContainer>
-        <img src={post} alt="post" />
+        <img src={imageUrl} alt="post" />
       </ImageContainer>
+      <Caption>
+        <strong>{username}</strong>
+        {caption}
+      </Caption>
       {comments.map((comment, index) => (
         <div key={comment + index}>{comment}</div>
       ))}
