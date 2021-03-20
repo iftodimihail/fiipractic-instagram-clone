@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Home from "pages/Home";
 import SignUp from "pages/SignUp";
+import LogIn from "pages/LogIn";
 import { createBrowserHistory } from "history";
 
 const history = createBrowserHistory();
@@ -16,6 +17,7 @@ function App() {
         {/* sign-up */}
         <Route exact path="/signup" component={SignUp} />
         {/* login */}
+        <Route exact path="/login" component={LogIn} />
         {/* my-profile */}
       </Switch>
     </Router>
