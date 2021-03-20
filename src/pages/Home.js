@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Post from "components/Post";
 import { db } from "utils/firebase";
-import Header from "components/Header";
 
 const AppContainer = styled.div`
   display: flex;
@@ -21,7 +20,6 @@ function Home() {
 
   return (
     <AppContainer>
-      <Header></Header>
 
       {posts.map((post) => (
         <Post key={post.id} {...post} />

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Header from "components/Header";
 import instaLogo from "assets/instaLogo.png";
 import { auth } from "utils/firebase";
 import { Button, Input } from "antd";
@@ -61,7 +60,6 @@ function Login() {
 
   return (
     <LoginComponent>
-      <Header></Header>
       <CenteredWrap>
         <LoginContainer>
           <LogoContainer>

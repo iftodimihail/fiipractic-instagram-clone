@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Avatar } from "antd";
 import styled from "styled-components";
 import { auth, db } from "utils/firebase";
-import Header from "components/Header";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -96,7 +95,6 @@ function Profile() {
 
   return (
     <ProfileContainer>
-      <Header></Header>
       <ProfileDetails>
         <MyAvatar size={128}>
           {auth.currentUser?.displayName?.[0]?.toUpperCase()}

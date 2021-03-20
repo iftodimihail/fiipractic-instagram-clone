@@ -4,7 +4,6 @@ import instaLogo from "assets/instaLogo.png";
 import { Button, Input } from "antd";
 import { auth } from "utils/firebase";
 import { useHistory } from "react-router";
-import Header from "components/Header";
 
 const SignupPage = styled.div`
 `
@@ -66,7 +65,6 @@ function SignUp() {
 
   return (
     <SignupPage>
-      <Header></Header>
       <CenteredWrap>
         <SignUpcontainer>
           <LogoContainer>
