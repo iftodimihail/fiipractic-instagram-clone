@@ -6,7 +6,7 @@ import { auth, db } from "utils/firebase";
 import UploadModal from "components/UploadModal";
 
 const HeaderComponent = styled.div`
-  width: 100%;
+  width: 900px;
   position: sticky;
   z-index: 10;
   top: 0;

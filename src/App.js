@@ -20,7 +20,10 @@ function App() {
           <Route exact path="/login" component={Login} />
           {/*sign-up*/}
           <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/myprofile" component={Profile} />
+          <Route path="/profile/:id">
+            <Profile />
+          </Route>
         </AppLayout>
       </Switch>
     </Router>

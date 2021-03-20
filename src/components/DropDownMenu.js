@@ -17,7 +17,7 @@ function ValidMenu(isLoggedIn, openUploadModal, navigateToProfile) {
         <Menu.Item
           key="myProfile"
           onClick={() => {
-            history.push(`/${"profile"}`);
+            history.push(`/${"myprofile"}`);
           }}
         >
           Profile

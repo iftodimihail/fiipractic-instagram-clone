@@ -5,7 +5,9 @@ import { auth } from "utils/firebase";
 import { Button, Input } from "antd";
 import { useHistory } from "react-router";
 
-const LoginComponent = styled.div``;
+const LoginComponent = styled.div`
+  margin-top: 30px;
+`;
 
 const CenteredWrap = styled.div`
   height: 100%;
@@ -16,14 +18,14 @@ const CenteredWrap = styled.div`
 `;
 
 const LoginContainer = styled.div`
-  width: 300px;
+  width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 30px;
   > * {
     margin-bottom: 10px;
   }

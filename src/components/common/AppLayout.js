@@ -3,11 +3,14 @@ import Header from "components/common/Header";
 import styled from "styled-components";
 
 const AppLayoutComponent = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const AppContentContainer = styled.div`
-  padding: 24px 0;
+  padding: 0 24px 0;
   height: 100%;
   width: 100%;
 `;

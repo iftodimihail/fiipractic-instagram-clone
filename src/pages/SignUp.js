@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import instaLogo from "assets/instaLogo.png";
 import { Button, Input } from "antd";
-import { auth } from "utils/firebase";
+import { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
 
 const SignupPage = styled.div`
-`
+  margin-top: 30px;
+`;
 
 const CenteredWrap = styled.div`
   height: 100%;
@@ -17,14 +18,14 @@ const CenteredWrap = styled.div`
 `;
 
 const SignUpcontainer = styled.div`
-  width: 300px;
+  width: 400px;
   border: 1px solid lightgray;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 30px;
   > * {
     margin-bottom: 10px;
   }
@@ -58,8 +59,16 @@ function SignUp() {
         await authUser.user.updateProfile({
           displayName: username,
         });
-        history.push("/");
       })
+      .then(async () => {
+        await db.collection("users").add({
+          username: username,
+          followers: [],
+          following: [],
+          description: "No description",
+        });
+      })
+      .then(async () => await history.push("/login"))
       .catch((err) => setErrorMessage(err.message));
   };
 
