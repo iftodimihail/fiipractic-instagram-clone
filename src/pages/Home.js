@@ -1,9 +1,8 @@
-import React, {useState} from "react";
-import { Input, Button } from "antd";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
-import postImg from "assets/PostImg.png";
 import Post from "components/Post";
+import { auth, db } from "utils/firebase";
 
 const AppContainer = styled.div`
   display: flex;
@@ -26,43 +25,29 @@ const Header = styled.div`
   }
 `;
 
-const AddPostContainer = styled.div`
-  position: relative;
-  display: flex;
-  width: 600px
-`;
-
-const PostInput = styled(Input)`
-  border: 0;
-  border-radius: 0;
-  border: 1px solid lightgray;
-  padding: 10px 50px 10px 10px;
-`;
-
-const PostButton = styled(Button)`
-  position: absolute;
-  right: 0;
-  padding: 0 10px 0 5px;
-  height: 100%;
-`;
-
 function Home() {
-  const [PostData, setPostData] = useState("");
   const [Posts, setPosts] = useState([]);
+  const [user, setUser] = useState();
 
-  const handlePost = () => {
-    
-    if (PostData.length != 0)
-    {
-      console.log(Posts)
+  useEffect(() => {
+    const unsubcribe = auth.onAuthStateChanged((authUser) => {
+      setUser(authUser);
+    })
 
-      setPosts((prevPosts) => {
-        return [...prevPosts, PostData];
-      });
+    return () => unsubcribe();
+  }, [user]);
 
-      setPostData("")
-    }
-  }
+  useEffect (() => {
+     db.collection("posts")
+     .onSnapshot((snapshot) => 
+      setPosts(
+        snapshot.docs.map((doc) => ({
+          id: doc.id, 
+          ...doc.data()
+        })) 
+      ) 
+     )
+  }, []);
 
   return (
     <AppContainer>
@@ -71,21 +56,9 @@ function Home() {
         <img src={instagramLogo} alt="instagram logo" />
       </Header>
       {/* list of posts */}
-
-      <AddPostContainer>
-        {/* input */}
-        <PostInput
-          value={PostData}
-          onChange={(event) => setPostData(event.target.value)}
-        />
-        {/* post button */}
-        <PostButton type="text" onClick={handlePost}>
-          Post
-        </PostButton>
-      </AddPostContainer>
-
-      {Posts.map((element, index) => (
-        <Post key={index} username={element} imageUrl={postImg} />
+{console.log(Posts)}
+      {Posts.map((post) => (
+        <Post key={post.id} {...post} />
       ))}
       
     </AppContainer>
