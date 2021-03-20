@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Form, Input, Button } from 'antd'
 import Auth from 'templates/Auth'
 import { history, useHistory } from "react-router-dom"
-import { atuh } from "utils/firebase"
+import { atuh, auth } from "utils/firebase"
 
 
 const layout = {
@@ -27,19 +27,24 @@ function Login () {
     const history = useHistory();
 
     const onFinish = (values) => {
-        console.log('Success:', values);
+        auth
+            .signInWithEmailAndPassword(values.email, values.password)
+            .then(() => {
+                history.push("/")
+            })
+            .catch((err) => console.log(err.message))
     };
 
     return (
         <Auth>
             <Form {...layout} name="basic" onFinish={onFinish}>
                 <Form.Item
-                    label="Username"
-                    name="username"
+                    label="Email"
+                    name="email"
                     rules={[
                     {
                         required: true,
-                        message: 'Please input your username!',
+                        message: 'Please input your email!',
                     },
                     ]}
                 >

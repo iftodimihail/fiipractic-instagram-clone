@@ -6,8 +6,7 @@ import { faEllipsisH, faCircle, faComment, faBookmark} from '@fortawesome/free-s
 import { faHeart as farHeart, faCircle as farCircle } from '@fortawesome/free-regular-svg-icons';
 
 const PostContainer = styled.div`
-  widht: 100%;
-  max-width: 600px;
+  width: 600px;
   border: 1px solid lightgray;
   border-radius: 4px;
   margin: 20px;
