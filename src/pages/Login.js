@@ -15,7 +15,7 @@ const CenteredWrap = styled.div`
   align-items: center;
 `;
 
-const SignUpContainer = styled.div`
+const LoginContainer = styled.div`
   width: 300px;
   border: 1px solid lightgray;
   border-radius: 4px;
@@ -46,8 +46,7 @@ const Error = styled.span`
   color: red;
 `;
 
-function SignUp() {
-  const [username, setUsername] = useState("");
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -56,28 +55,17 @@ function SignUp() {
 
   const handleSignUp = () => {
     auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(async (authUser) => {
-        await authUser.user.updateProfile({
-          displayName: username,
-        });
-
-        history.push("/");
-      })
+      .signInWithEmailAndPassword(email, password)
+      .then(() => history.push("/"))
       .catch((err) => setErrorMessage(err.message));
   };
 
   return (
     <CenteredWrap>
-      <SignUpContainer>
+      <LoginContainer>
         <LogoContainer>
           <img src={instaLogo} alt="instagram logo" />
         </LogoContainer>
-        <Input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
         <Input
           placeholder="Email"
           type="email"
@@ -93,13 +81,13 @@ function SignUp() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Error>{errorMessage}</Error>
-        <Link to="/login">Login</Link>
+        <Link to="/signup">Sign up</Link>
         <Button type="primary" onClick={handleSignUp}>
-          Sign up
+          Login
         </Button>
-      </SignUpContainer>
+      </LoginContainer>
     </CenteredWrap>
   );
 }
 
-export default SignUp;
+export default Login;

@@ -5,6 +5,7 @@ import Post from "components/Post";
 import { auth, db } from "utils/firebase";
 import DropdownMenu from "components/DropdownMenu";
 import UploadModal from "components/UploadModal";
+import { Link } from "react-router-dom";
 
 const AppContainer = styled.div`
   display: flex;
@@ -20,7 +21,7 @@ const Header = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 12px;
+  padding: 20px;
   border-bottom: 1px solid lightgray;
   margin-bottom: 10px;
   background-color: white;
@@ -64,10 +65,14 @@ function Home() {
     <AppContainer>
       <Header>
         <img src={instagramLogo} alt="instagram logo" />
-        <DropdownMenu
-          username={user?.displayName}
-          openUploadModal={() => setIsOpenedModal(true)}
-        />
+        {user ? (
+          <DropdownMenu
+            username={user?.displayName}
+            openUploadModal={() => setIsOpenedModal(true)}
+          />
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
       </Header>
       {posts.map((post) => (
         <Post key={post.id} {...post} />
