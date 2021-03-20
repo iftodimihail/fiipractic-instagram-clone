@@ -7,9 +7,12 @@ const Username = styled.span`
   cursor: pointer;
 `;
 
-function DropdownMenu({ username, openUploadModal }) {
+function DropdownMenu({ navigateToProfile, username, openUploadModal }) {
   const menu = (
     <Menu>
+      <Menu.Item key="profile" onClick={navigateToProfile}>
+        Profile
+      </Menu.Item>
       <Menu.Item key="upload" onClick={openUploadModal}>
         Upload
       </Menu.Item>
