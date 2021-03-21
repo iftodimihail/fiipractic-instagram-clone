@@ -80,7 +80,6 @@ function Post({ username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
-  // ["coment 1", "comment2"];
   const handlePostComment = () => {
     setComments((prevComments) => {
       return [...prevComments, commentText];
@@ -94,7 +93,7 @@ function Post({ username, avatarUrl, imageUrl, caption }) {
       {/* Header */}
       <PostHeader>
         <Avatar alt={username} src={avatarUrl}>
-          {username[0].toUpperCase()}
+          {username?.[0]?.toUpperCase()}
         </Avatar>
         <UsernameText>{username}</UsernameText>
       </PostHeader>
