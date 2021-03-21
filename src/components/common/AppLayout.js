@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
-import DropdownMenu from 'components/DropdownMenu';
-import UploadModal from 'components/UploadModal';
-import { auth, db } from "utils/firebase";
-
+import DropdownMenu from "components/DropdownMenu";
+import UploadModal from "components/UploadModal";
+import { auth } from "utils/firebase";
+import { useHistory } from "react-router";
 
 const AppContainer = styled.div`
   display: flex;
@@ -47,9 +47,10 @@ const AppContent = styled.div`
   justify-content: center;
 `;
 
-function AppLayout({ history, children }) {
+function AppLayout({ children }) {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -82,7 +83,7 @@ function AppLayout({ history, children }) {
         username={user?.displayName}
       />
     </AppContainer>
-  )
+  );
 }
 
 export default AppLayout;

@@ -64,34 +64,36 @@ const PostContainer = styled.div`
     height: 100%;
     object-fit: cover;
   }
-
 `;
 
-
 function Profile() {
-
   const [posts, setPosts] = useState([]);
 
   const renderProfilePosts = () => {
     return posts.map(({ imageUrl }, index) => {
-      return <PostContainer key={index}>
-        <img src={imageUrl} alt="post" />
-      </PostContainer>
-    })
-  }
+      return (
+        <PostContainer key={index}>
+          <img src={imageUrl} alt="post" />
+        </PostContainer>
+      );
+    });
+  };
 
   useEffect(() => {
     db.collection("posts")
       .orderBy("timestamp", "desc")
-      .onSnapshot(snapshot => {
-        const filteredPosts = snapshot.docs.filter(doc => {
-          return doc.data().username === auth.currentUser?.displayName;
-        })
-        return setPosts(filteredPosts.map(post => ({
-          id: post.id,
-          ...post.data()
-        })))
-      })
+      .onSnapshot((snapshot) => {
+        const filteredPosts = snapshot.docs.filter(
+          (doc) => doc.data().username === auth.currentUser?.displayName
+        );
+
+        return setPosts(
+          filteredPosts.map((post) => ({
+            id: post.id,
+            ...post.data(),
+          }))
+        );
+      });
   }, []);
 
   return (
@@ -105,11 +107,9 @@ function Profile() {
           <ProfileStats>10 posts</ProfileStats>
         </ProfileInfo>
       </ProfileDetails>
-      <ProfilePosts>
-        {renderProfilePosts()}
-      </ProfilePosts>
+      <ProfilePosts>{renderProfilePosts()}</ProfilePosts>
     </ProfileContainer>
-  )
-};
+  );
+}
 
 export default Profile;
