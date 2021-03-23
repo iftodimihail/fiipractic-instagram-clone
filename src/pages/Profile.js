@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Avatar } from "antd";
 import styled from "styled-components";
-import { auth, db } from "utils/firebase";
+import firebase, { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import { Button } from "antd";
-import * as admin from "firebase-admin";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -124,7 +123,7 @@ function Profile() {
     });
   };
 
-  const setButton = async (user, userProfile) => {
+  async function setButton(user, userProfile) {
     if (userProfile == user) setFollowState("Edit profile");
     else if (userProfile == id) {
       await db
@@ -140,29 +139,31 @@ function Profile() {
         });
     }
     return followState;
-  };
+  }
 
   async function ManageFollow() {
     if (followState === "Follow") {
       const userColl = await db.collection("users");
       userColl.doc(profile).update({
-        followers: admin.firestore.FieldValue.arrayUnion(myUser.displayName),
+        followers: firebase.firestore.FieldValue.arrayUnion(myUser.displayName),
       });
 
       userColl.doc(myUser.displayName).update({
-        following: admin.firestore.FieldValue.arrayUnion(profile),
+        following: firebase.firestore.FieldValue.arrayUnion(profile),
       });
 
       setFollowersNumber((no) => no + 1);
       setFollowState("Unfollow");
     } else if (followState === "Unfollow") {
       const userColl = await db.collection("users");
-      userColl.doc(profile).userProfileDoc.update({
-        followers: admin.firestore.FieldValue.arrayRemove(myUser.displayName),
+      userColl.doc(profile).update({
+        followers: firebase.firestore.FieldValue.arrayRemove(
+          myUser.displayName
+        ),
       });
 
       userColl.doc(myUser.displayName).update({
-        following: admin.firestore.FieldValue.arrayRemove(profile),
+        following: firebase.firestore.FieldValue.arrayRemove(profile),
       });
 
       setFollowersNumber((no) => no - 1);
