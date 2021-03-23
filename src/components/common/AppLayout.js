@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "components/common/Header";
 import styled from "styled-components";
-
 const AppLayoutComponent = styled.div`
   display: flex;
   flex-direction: column;

@@ -61,8 +61,10 @@ function SignUp() {
         });
       })
       .then(async () => {
-        await db.collection("users").add({
+        await db.collection("users").doc(username).set({
           username: username,
+          firstname: "firstname",
+          lastname: "lastname",
           followers: [],
           following: [],
           description: "No description",

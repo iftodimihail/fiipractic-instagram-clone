@@ -5,6 +5,7 @@ import { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import { Button } from "antd";
+import * as admin from "firebase-admin";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -59,13 +60,16 @@ const FollowButton = styled(Button)`
   width: 200px;
   margin-bottom: none;
   margin-top: 10px;
-  background-color: lightskyblue;
-  font-size: 18px;
+  background-color: white;
+  font-size: 16px;
   font-weight: 500;
   :hover,
   :focus {
-    background-color: lightskyblue;
+    background-color: white;
     color: black;
+  }
+  a {
+    padding: 5px, 9px;
   }
 `;
 
@@ -104,9 +108,11 @@ function Profile() {
   const [posts, setPosts] = useState([]);
   const [followersNo, setFollowersNumber] = useState(0);
   const [followingNo, setFollowingNumber] = useState(0);
+  const [followState, setFollowState] = useState("Loading...");
+  const [myUser, setMyUser] = useState();
+  const [profile, setProfile] = useState();
   const history = useHistory();
-  let { id } = useParams();
-  const currentUser = id ? id : auth.currentUser?.displayName;
+  const { id } = useParams();
 
   const renderProfilePosts = () => {
     return posts.map(({ imageUrl }, index) => {
@@ -118,60 +124,102 @@ function Profile() {
     });
   };
 
-  const setButton = () => {
-    if (currentUser == auth.currentUser?.displayName) return "EDIT";
-    if (currentUser == id) return "FOLLOW";
-    return "Login needed";
+  const setButton = async (user, userProfile) => {
+    if (userProfile == user) setFollowState("Edit profile");
+    else if (userProfile == id) {
+      await db
+        .collection("users")
+        .doc(user)
+        .get()
+        .then((myProfile) => {
+          if (myProfile.exists) {
+            if (myProfile.data().following.includes(userProfile))
+              setFollowState("Unfollow");
+            else setFollowState("Follow");
+          } else setFollowState("Login needed");
+        });
+    }
+    return followState;
   };
 
-  const ManageFollow = () => {
-    // if (currentUser == id && currentUser != auth.currentUser?.displayName) {
-    //   db.ref("users")
-    //     .orderByChild("username")
-    //     .equalTo(currentUser)
-    //     .once("value")[0]
-    //     .then(function (snapshot) {
-    //       snapshot.ref.child("followers").push(auth.currentUser?.displayName);
-    //     });
-    // }
-  };
+  async function ManageFollow() {
+    if (followState === "Follow") {
+      const userColl = await db.collection("users");
+      userColl.doc(profile).update({
+        followers: admin.firestore.FieldValue.arrayUnion(myUser.displayName),
+      });
+
+      userColl.doc(myUser.displayName).update({
+        following: admin.firestore.FieldValue.arrayUnion(profile),
+      });
+
+      setFollowersNumber((no) => no + 1);
+      setFollowState("Unfollow");
+    } else if (followState === "Unfollow") {
+      const userColl = await db.collection("users");
+      userColl.doc(profile).userProfileDoc.update({
+        followers: admin.firestore.FieldValue.arrayRemove(myUser.displayName),
+      });
+
+      userColl.doc(myUser.displayName).update({
+        following: admin.firestore.FieldValue.arrayRemove(profile),
+      });
+
+      setFollowersNumber((no) => no - 1);
+      setFollowState("Follow");
+    }
+  }
 
   useEffect(() => {
-    const users = db.collection("users");
-    users?.where("username", "==", currentUser).onSnapshot((snapshot) => {
-      if (snapshot.docs.length > 0) {
-        const myUser = snapshot.docs[0].data();
-        setFollowingNumber(myUser.following.length);
-        setFollowersNumber(myUser.followers.length);
-      } else {
-        history.push(`/${"myprofile"}`);
-      }
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      setMyUser(authUser);
     });
 
-    db.collection("posts")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        const filteredPosts = snapshot.docs.filter((doc) => {
-          return doc.data().username === currentUser;
+    if (myUser) {
+      if (id) setProfile(id);
+      else setProfile(myUser.displayName);
+      const users = db.collection("users");
+      if (profile) {
+        users?.where("username", "==", profile).onSnapshot((snapshot) => {
+          if (snapshot.docs.length > 0) {
+            const myUserTemp = snapshot.docs[0].data();
+            setFollowingNumber(myUserTemp.following.length);
+            setFollowersNumber(myUserTemp.followers.length);
+          } else {
+            history.push(`/${"myprofile"}`);
+          }
         });
+        const btn = setButton(myUser.displayName, profile);
+        if (btn !== "Login needed") {
+          db.collection("posts")
+            .orderBy("timestamp", "desc")
+            .onSnapshot((snapshot) => {
+              const filteredPosts = snapshot.docs.filter((doc) => {
+                return doc.data().username === profile;
+              });
 
-        return setPosts(
-          filteredPosts.map((post) => ({
-            id: post.id,
-            ...post.data(),
-          }))
-        );
-      });
-  }, []);
+              return setPosts(
+                filteredPosts.map((post) => ({
+                  id: post.id,
+                  ...post.data(),
+                }))
+              );
+            });
+        }
+      }
+    }
+
+    return () => unsubscribe();
+  }, [myUser, profile, followState, followersNo]);
 
   return (
     <ProfileContainer>
       <ProfileDetails>
-        <MyAvatar size={128}>{currentUser?.[0]?.toUpperCase()}</MyAvatar>
+        <MyAvatar size={128}>{profile?.[0]?.toUpperCase()}</MyAvatar>
         <ProfileInfo>
           <UserAndButton>
-            <Username>{currentUser}</Username>
-            <FollowButton onClick={ManageFollow}>{setButton()}</FollowButton>
+            <Username>{profile}</Username>
+            <FollowButton onClick={ManageFollow}>{followState}</FollowButton>
           </UserAndButton>
           <ProfileStats>
             <Info>Posts: {posts.length}</Info>

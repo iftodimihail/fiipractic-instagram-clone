@@ -4,6 +4,7 @@ import instagramLogo from "assets/instaLogo.png";
 import styled from "styled-components";
 import { auth, db } from "utils/firebase";
 import UploadModal from "components/UploadModal";
+import { useCookies } from "react-cookie";
 
 const HeaderComponent = styled.div`
   width: 900px;
@@ -26,7 +27,6 @@ const HeaderComponent = styled.div`
   }
 `;
 
-
 function Header() {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
@@ -44,7 +44,7 @@ function Header() {
       <DropFownMenu
         username={user ? user.displayName : "Menu"}
         openUploadModal={() => setIsOpenedModal(true)}
-        isLoggedIn = {user ? true : false}
+        isLoggedIn={user ? true : false}
       />
       <UploadModal
         isOpened={isOpenedModal}
