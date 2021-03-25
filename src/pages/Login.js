@@ -40,14 +40,14 @@ const Error = styled.span`
 `;
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
 
   const handleLogin = () => {
     auth
-      .signInWithEmailAndPassword(username, password)
+      .signInWithEmailAndPassword(email, password)
       .then(async () => {
         history.push("/");
       })
@@ -60,9 +60,9 @@ function Login() {
           <img src={instaLogo} alt="instagram logo" />
         </LogoContainer>
         <Input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           placeholder="Password"
