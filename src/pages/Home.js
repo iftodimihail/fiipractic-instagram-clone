@@ -29,14 +29,15 @@ const PostsContainer = styled.div`
 const SidebarContainer = styled.div`
   width: 35%;
   right: 0px;
-  top: 80px;
+  top: 0px;
   display: flex;
   flex-direction: column;
   position: absolute;
 `;
 
 const FixedSlidebarContent = styled.div`
-  position: fixed;
+  position: sticky;
+  width: 100%;
 `;
 
 function Home({ user }) {
@@ -72,7 +73,7 @@ function Home({ user }) {
 
         <SidebarContainer>
           <FixedSlidebarContent>
-            <Sidebar />
+            <Sidebar username={user?.displayName} />
           </FixedSlidebarContent>
         </SidebarContainer>
       </HomeContainer>
