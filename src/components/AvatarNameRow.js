@@ -43,11 +43,17 @@ const FollowButton = styled(Button)`
   width: auto;
 `;
 
-const AvatarNameRow = ({ username, avatarUrl, textTop, textBottom }) => {
+const AvatarNameRow = ({
+  username,
+  avatarUrl,
+  textTop,
+  textBottom,
+  size = 40,
+}) => {
   return (
     <Container>
       <LeftContainer>
-        <Avatar size={40} alt={username} src={avatarUrl}>
+        <Avatar size={size} alt={username} src={avatarUrl}>
           {username[0].toUpperCase()}
         </Avatar>
         <NameStatus>

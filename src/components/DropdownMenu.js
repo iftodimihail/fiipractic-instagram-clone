@@ -2,23 +2,29 @@ import React from "react";
 import { Dropdown, Menu } from "antd";
 import { auth } from "utils/firebase";
 import styled from "styled-components";
-import { history, useHistory } from "react-router-dom"
+import { history, useHistory } from "react-router-dom";
 
 const Username = styled.span`
   cursor: pointer;
 `;
 
 function DropdownMenu({ username, openUploadModal }) {
-
   const history = useHistory();
 
   const navigateToProfile = () => {
-      history.push("/profile")
-  }
+    history.push("/profile");
+  };
+
+  const navigateToHome = () => {
+    history.push("/");
+  };
 
   const menu = (
     <Menu>
-      <Menu.Item key="profile" onClick={navigateToProfile} >
+      <Menu.Item key="home" onClick={navigateToHome}>
+        Home
+      </Menu.Item>
+      <Menu.Item key="profile" onClick={navigateToProfile}>
         My Profile
       </Menu.Item>
       <Menu.Item key="upload" onClick={openUploadModal}>

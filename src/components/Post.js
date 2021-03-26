@@ -18,6 +18,7 @@ const PostContainer = styled.div`
   border: 1px solid lightgray;
   border-radius: 4px;
   margin-bottom: 40px;
+  background-color: white;
 `;
 
 const PostHeader = styled.div`

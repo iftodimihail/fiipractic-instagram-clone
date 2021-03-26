@@ -1,4 +1,5 @@
 import React from "react";
+import Auth from "templates/Auth";
 import styled from "styled-components";
 import { history, useHistory } from "react-router-dom";
 import { auth } from "utils/firebase";
@@ -28,64 +29,70 @@ function SignUp() {
   };
 
   return (
-    <FormAuth
-      name="register_form"
-      className="register-form"
-      onFinish={onFinish}
-    >
-      <Form.Item
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: "Please input your Email!",
-          },
-        ]}
+    <Auth>
+      <FormAuth
+        name="register_form"
+        className="register-form"
+        onFinish={onFinish}
       >
-        <Input
-          prefix={<MailOutlined className="site-form-item-icon" />}
-          placeholder="Email"
-        />
-      </Form.Item>
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Email!",
+            },
+          ]}
+        >
+          <Input
+            prefix={<MailOutlined className="site-form-item-icon" />}
+            placeholder="Email"
+          />
+        </Form.Item>
 
-      <Form.Item
-        name="username"
-        rules={[
-          {
-            required: true,
-            message: "Please input your Username!",
-          },
-        ]}
-      >
-        <Input
-          prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Username"
-        />
-      </Form.Item>
+        <Form.Item
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Username!",
+            },
+          ]}
+        >
+          <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Username"
+          />
+        </Form.Item>
 
-      <Form.Item
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: "Please input your Password!",
-          },
-        ]}
-      >
-        <Input
-          prefix={<LockOutlined className="site-form-item-icon" />}
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Password!",
+            },
+          ]}
+        >
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder="Password"
+          />
+        </Form.Item>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Register
-        </Button>
-        Or <a href="/login">login now!</a>
-      </Form.Item>
-    </FormAuth>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
+            Register
+          </Button>
+          Or <a href="/login">login now!</a>
+        </Form.Item>
+      </FormAuth>
+    </Auth>
   );
 }
 

@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Post from "components/Post";
-import UploadModal from "components/UploadModal";
-import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
+import AppLayout from "templates/AppLayout";
 import { auth, db } from "utils/firebase";
-
-const AppContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: rgba(250, 250, 250, 1);
-`;
 
 const HomeContainer = styled.div`
   width: 80%;
   position: relative;
   max-width: 1000px;
-  margin-top: 80px;
 `;
 
 const PostsContainer = styled.div`
@@ -36,13 +27,13 @@ const SidebarContainer = styled.div`
 `;
 
 const FixedSlidebarContent = styled.div`
-  position: sticky;
-  width: 100%;
+  position: fixed;
+  width: inherit;
+  max-width: 300px;
 `;
 
 function Home({ user }) {
   const [Posts, setPosts] = useState([]);
-  const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
     db.collection("posts").onSnapshot((snapshot) =>
@@ -56,10 +47,7 @@ function Home({ user }) {
   }, []);
 
   return (
-    <AppContainer>
-      {/* header */}
-      <Navbar username={user?.displayName} setIsOpen={setIsOpenModal} />
-
+    <AppLayout user={user}>
       <HomeContainer>
         {/* list of posts */}
 
@@ -77,13 +65,7 @@ function Home({ user }) {
           </FixedSlidebarContent>
         </SidebarContainer>
       </HomeContainer>
-
-      <UploadModal
-        isOpened={isOpenModal}
-        setIsOpen={setIsOpenModal}
-        username={user?.displayName}
-      />
-    </AppContainer>
+    </AppLayout>
   );
 }
 

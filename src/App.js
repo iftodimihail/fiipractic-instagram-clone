@@ -10,7 +10,6 @@ import Home from "pages/Home";
 import Login from "pages/Login";
 import SignUp from "pages/SignUp";
 import Profile from "pages/Profile";
-import Auth from "templates/Auth";
 import { createBrowserHistory } from "history";
 import { auth } from "utils/firebase";
 
@@ -50,27 +49,25 @@ function App() {
           redirectTo="/login"
           exact
           path="/profile"
-          component={Profile}
+          render={() => <Profile user={user} />}
         ></GuardedRoute>
 
-        <Auth>
-          {/* login */}
-          <GuardedRoute
-            auth={!user}
-            redirectTo="/"
-            exact
-            path="/login"
-            component={Login}
-          ></GuardedRoute>
-          {/* sign up */}
-          <GuardedRoute
-            auth={!user}
-            redirectTo="/"
-            exact
-            path="/signup"
-            component={SignUp}
-          ></GuardedRoute>
-        </Auth>
+        {/* login */}
+        <GuardedRoute
+          auth={!user}
+          redirectTo="/"
+          exact
+          path="/login"
+          component={Login}
+        ></GuardedRoute>
+        {/* sign up */}
+        <GuardedRoute
+          auth={!user}
+          redirectTo="/"
+          exact
+          path="/signup"
+          component={SignUp}
+        ></GuardedRoute>
       </Switch>
     </Router>
   );
