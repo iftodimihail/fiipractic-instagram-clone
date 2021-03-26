@@ -1,28 +1,40 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
+import particlesBg from "assets/particlesBg.jpg";
+import Particles from "react-particles-js";
 
 const CenteredWrap = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  height: 100%;
+
+  background-image: url(${particlesBg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const AuthenticationContainer = styled.div`
-    width: 400px;
-    border: 1px solid lightgray;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
+  max-width: 400px;
+  width: 80%;
 
-    > * {
-        margin-bottom: 30px;
-    }
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 3px solid white;
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  > * {
+    margin-bottom: 30px;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -36,20 +48,56 @@ const LogoContainer = styled.div`
   }
 `;
 
-function Auth (props) {
+const ParticlesBg = styled(Particles)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;
 
-    return (
-        <CenteredWrap>
-            <AuthenticationContainer>
-            <LogoContainer>
-                <img src={instagramLogo} alt="instagram logo" />
-            </LogoContainer>
+const ParticlesSettings = {
+  particles: {
+    number: {
+      value: 30,
+      density: {
+        enable: true,
+        value_area: 300,
+      },
+    },
+  },
+  interactivity: {
+    detect_on: "canvas",
+    events: {
+      onhover: {
+        enable: true,
+        mode: "grab",
+      },
+      resize: true,
+    },
+    modes: {
+      grab: {
+        distance: 300,
+        line_linked: {
+          opacity: 1,
+        },
+      },
+    },
+  },
+};
 
-            {props.children}
+function Auth(props) {
+  return (
+    <CenteredWrap>
+      <ParticlesBg params={ParticlesSettings} />
 
-            </AuthenticationContainer>
-        </CenteredWrap>
-    )
+      <AuthenticationContainer>
+        <LogoContainer>
+          <img src={instagramLogo} alt="instagram logo" />
+        </LogoContainer>
+
+        {props.children}
+      </AuthenticationContainer>
+    </CenteredWrap>
+  );
 }
 
 export default Auth;

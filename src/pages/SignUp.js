@@ -1,91 +1,92 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Form, Input, Button } from 'antd'
-import { history, useHistory } from "react-router-dom"
-import { auth } from "utils/firebase"
+import React from "react";
+import styled from "styled-components";
+import { history, useHistory } from "react-router-dom";
+import { auth } from "utils/firebase";
+import { Form, Input, Button, Checkbox } from "antd";
+import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 
+const FormAuth = styled(Form)`
+  button {
+    width: 100%;
+  }
+`;
 
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
+function SignUp() {
+  const history = useHistory();
 
-const tailLayout = {
-    wrapperCol: {
-        offset: 8,
-        span: 16,
-    },
-};
+  const onFinish = (values) => {
+    auth
+      .createUserWithEmailAndPassword(values.email, values.password)
+      .then(async (authUser) => {
+        await authUser.user.updateProfile({
+          displayName: values.username,
+        });
 
-function SignUp () {
+        history.push("/");
+      })
+      .catch((err) => console.log(err.message));
+  };
 
-    const history = useHistory();
+  return (
+    <FormAuth
+      name="register_form"
+      className="register-form"
+      onFinish={onFinish}
+    >
+      <Form.Item
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Email!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<MailOutlined className="site-form-item-icon" />}
+          placeholder="Email"
+        />
+      </Form.Item>
 
-    const onFinish = (values) => {
-        auth
-            .createUserWithEmailAndPassword(values.email, values.password)
-            .then(async (authUser) => {
-                await authUser.user.updateProfile({
-                    displayName: values.username
-                })
+      <Form.Item
+        name="username"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Username!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<UserOutlined className="site-form-item-icon" />}
+          placeholder="Username"
+        />
+      </Form.Item>
 
-                history.push("/")
-            })
-            .catch((err) => console.log(err.message))
-    };
+      <Form.Item
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Password!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<LockOutlined className="site-form-item-icon" />}
+          type="password"
+          placeholder="Password"
+        />
+      </Form.Item>
 
-    return (
-        <Form {...layout} name="basic" onFinish={onFinish}>
-            <Form.Item
-                label="Username"
-                name="username"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your username!',
-                },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="Email"
-                name="email"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your email!',
-                },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your password!',
-                },
-                ]}
-            >
-                <Input.Password />
-            </Form.Item>
-
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                Submit
-                </Button>
-            </Form.Item>
-        </Form>
-    )
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="login-form-button">
+          Register
+        </Button>
+        Or <a href="/login">login now!</a>
+      </Form.Item>
+    </FormAuth>
+  );
 }
 
 export default SignUp;

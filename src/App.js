@@ -1,11 +1,16 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect  } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import Home from "pages/Home";
-import Login from "pages/Login"
+import Login from "pages/Login";
 import SignUp from "pages/SignUp";
-import Profile from "pages/Profile"
-import Auth from 'templates/Auth'
+import Profile from "pages/Profile";
+import Auth from "templates/Auth";
 import { createBrowserHistory } from "history";
 import { auth } from "utils/firebase";
 
@@ -18,22 +23,54 @@ const GuardedRoute = ({ auth, redirectTo, ...rest }) => {
 };
 
 function App() {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const unsubcribe = auth.onAuthStateChanged((authUser) => {
+      setUser(authUser);
+    });
+
+    return () => unsubcribe();
+  }, [user]);
+
   return (
     <Router history={history}>
       <Switch>
-
         {/* home */}
-        <GuardedRoute auth={auth.currentUser} redirectTo="/login" exact path="/" component={Home}></GuardedRoute>
+        <GuardedRoute
+          auth={user}
+          redirectTo="/login"
+          exact
+          path="/"
+          component={Home}
+        ></GuardedRoute>
         {/* profile */}
-        <GuardedRoute auth={auth.currentUser} redirectTo="/login" exact path="/profile" component={Profile}></GuardedRoute>
+        <GuardedRoute
+          auth={user}
+          redirectTo="/login"
+          exact
+          path="/profile"
+          component={Profile}
+        ></GuardedRoute>
 
         <Auth>
           {/* login */}
-          <GuardedRoute auth={!(auth.currentUser)} redirectTo="/" exact path="/login" component={Login}></GuardedRoute>
+          <GuardedRoute
+            auth={!user}
+            redirectTo="/"
+            exact
+            path="/login"
+            component={Login}
+          ></GuardedRoute>
           {/* sign up */}
-          <GuardedRoute auth={!(auth.currentUser)} redirectTo="/" exact path="/signup" component={SignUp}></GuardedRoute>
+          <GuardedRoute
+            auth={!user}
+            redirectTo="/"
+            exact
+            path="/signup"
+            component={SignUp}
+          ></GuardedRoute>
         </Auth>
-
       </Switch>
     </Router>
   );

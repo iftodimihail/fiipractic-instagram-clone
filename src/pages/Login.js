@@ -1,74 +1,85 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Form, Input, Button } from 'antd'
-import { history, useHistory } from "react-router-dom"
-import { auth } from "utils/firebase"
+import React from "react";
+import styled from "styled-components";
+import { history, useHistory } from "react-router-dom";
+import { auth } from "utils/firebase";
+import { Form, Input, Button, Checkbox } from "antd";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 
+const FormAuth = styled(Form)`
+  button {
+    width: 100%;
+  }
+`;
 
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
+function Login() {
+  const history = useHistory();
 
-const tailLayout = {
-    wrapperCol: {
-        offset: 8,
-        span: 16,
-    },
-};
+  const onFinish = (values) => {
+    auth
+      .signInWithEmailAndPassword(values.email, values.password)
+      .then(() => {
+        history.push("/");
+      })
+      .catch((err) => console.log(err.message));
+  };
 
-function Login () {
+  return (
+    <FormAuth
+      name="login_form"
+      className="login-form"
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+    >
+      <Form.Item
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Email!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<MailOutlined className="site-form-item-icon" />}
+          placeholder="Email"
+        />
+      </Form.Item>
 
-    const history = useHistory();
+      <Form.Item
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Password!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<LockOutlined className="site-form-item-icon" />}
+          type="password"
+          placeholder="Password"
+        />
+      </Form.Item>
+      <Form.Item>
+        <Form.Item name="remember" valuePropName="checked" noStyle>
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
 
-    const onFinish = (values) => {
-        auth
-            .signInWithEmailAndPassword(values.email, values.password)
-            .then(() => {
-                history.push("/")
-            })
-            .catch((err) => console.log(err.message))
-    };
+        <a className="login-form-forgot" href="/">
+          Forgot password
+        </a>
+      </Form.Item>
 
-    return (
-        <Form {...layout} name="basic" onFinish={onFinish}>
-            <Form.Item
-                label="Email"
-                name="email"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your email!',
-                },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your password!',
-                },
-                ]}
-            >
-                <Input.Password />
-            </Form.Item>
-
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                Submit
-                </Button>
-            </Form.Item>
-        </Form>
-    )
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="login-form-button">
+          Log in
+        </Button>
+        Or <a href="/signup">register now!</a>
+      </Form.Item>
+    </FormAuth>
+  );
 }
 
 export default Login;
