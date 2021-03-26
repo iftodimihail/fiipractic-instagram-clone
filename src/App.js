@@ -42,7 +42,7 @@ function App() {
           redirectTo="/login"
           exact
           path="/"
-          component={Home}
+          render={() => <Home user={user} />}
         ></GuardedRoute>
         {/* profile */}
         <GuardedRoute

@@ -1,44 +1,47 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
 import Post from "components/Post";
-import DropdownMenu from "components/DropdownMenu";
 import UploadModal from "components/UploadModal";
+import Navbar from "components/Navbar";
+import Sidebar from "components/Sidebar";
 import { auth, db } from "utils/firebase";
 
 const AppContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  background-color: rgba(250, 250, 250, 1);
 `;
 
-const Header = styled.div`
-  width: 100%;
+const HomeContainer = styled.div`
+  width: 80%;
+  position: relative;
+  max-width: 1000px;
+  margin-top: 80px;
+`;
+
+const PostsContainer = styled.div`
+  width: 65%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  border-bottom: 1px solid lightgray;
-  margin-bottom: 10px;
-
-  img {
-    height: 40px;
-    object-fit: contain;
-  }
+  flex-direction: column;
 `;
 
-function Home() {
+const SidebarContainer = styled.div`
+  width: 35%;
+  right: 0px;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+`;
+
+const FixedSlidebarContent = styled.div`
+  position: fixed;
+`;
+
+function Home({ user }) {
   const [Posts, setPosts] = useState([]);
-  const [user, setUser] = useState();
   const [isOpenModal, setIsOpenModal] = useState(false);
-
-  useEffect(() => {
-    const unsubcribe = auth.onAuthStateChanged((authUser) => {
-      setUser(authUser);
-    });
-
-    return () => unsubcribe();
-  }, [user]);
 
   useEffect(() => {
     db.collection("posts").onSnapshot((snapshot) =>
@@ -54,19 +57,25 @@ function Home() {
   return (
     <AppContainer>
       {/* header */}
-      <Header>
-        <div />
-        <img src={instagramLogo} alt="instagram logo" />
-        <DropdownMenu
-          username={user?.displayName}
-          openUploadModal={() => setIsOpenModal(true)}
-        />
-      </Header>
-      {/* list of posts */}
+      <Navbar username={user?.displayName} setIsOpen={setIsOpenModal} />
 
-      {Posts.map((post) => (
-        <Post key={post.id} {...post} />
-      ))}
+      <HomeContainer>
+        {/* list of posts */}
+
+        <PostsContainer>
+          {Posts.map((post) => (
+            <Post key={post.id} {...post} />
+          ))}
+        </PostsContainer>
+
+        {/* Sidebar elements */}
+
+        <SidebarContainer>
+          <FixedSlidebarContent>
+            <Sidebar />
+          </FixedSlidebarContent>
+        </SidebarContainer>
+      </HomeContainer>
 
       <UploadModal
         isOpened={isOpenModal}

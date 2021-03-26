@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsisH, faCircle, faComment, faBookmark} from '@fortawesome/free-solid-svg-icons'
-import { faHeart as farHeart, faCircle as farCircle } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEllipsisH,
+  faCircle,
+  faComment,
+  faBookmark,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as farHeart,
+  faCircle as farCircle,
+} from "@fortawesome/free-regular-svg-icons";
 
 const PostContainer = styled.div`
-  width: 600px;
+  width: 100%;
   border: 1px solid lightgray;
   border-radius: 4px;
-  margin: 20px;
+  margin-bottom: 40px;
 `;
 
 const PostHeader = styled.div`
@@ -87,7 +95,7 @@ const PostButton = styled(Button)`
   }
 `;
 
-function Post({ username, avatarUrl, imageUrl}) {
+function Post({ username, avatarUrl, imageUrl }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -104,7 +112,6 @@ function Post({ username, avatarUrl, imageUrl}) {
     <PostContainer>
       {/* Header */}
       <PostHeader>
-        
         <Username>
           <Avatar alt={username} src={avatarUrl}>
             {username[0].toUpperCase()}
@@ -112,27 +119,36 @@ function Post({ username, avatarUrl, imageUrl}) {
           <UsernameText>{username}</UsernameText>
         </Username>
 
-        <FontAwesomeIcon icon={ faEllipsisH }/>
+        <FontAwesomeIcon icon={faEllipsisH} />
       </PostHeader>
-      
+
       <ImageContainer>
         <img src={imageUrl} alt="post" />
       </ImageContainer>
-      
+
       <ActionMenu>
         <ActionPart>
-          <FontAwesomeIcon icon={ farHeart } style={{marginRight: 5}} size='2x' color='red'/>
-          <FontAwesomeIcon icon={ faComment } size='2x' color='grey'/>
+          <FontAwesomeIcon
+            icon={farHeart}
+            style={{ marginRight: 5 }}
+            size="2x"
+            color="red"
+          />
+          <FontAwesomeIcon icon={faComment} size="2x" color="grey" />
         </ActionPart>
-        
+
         <ActionPart>
-          <FontAwesomeIcon icon={ faCircle } style={{marginRight: 5}} />
-          <FontAwesomeIcon icon={ faCircle } style={{marginRight: 5}} color='grey'/>
-          <FontAwesomeIcon icon={ faCircle } color='grey'/>
+          <FontAwesomeIcon icon={faCircle} style={{ marginRight: 5 }} />
+          <FontAwesomeIcon
+            icon={faCircle}
+            style={{ marginRight: 5 }}
+            color="grey"
+          />
+          <FontAwesomeIcon icon={faCircle} color="grey" />
         </ActionPart>
-          
+
         <ActionPart>
-          <FontAwesomeIcon icon={ faBookmark } size='2x' color='gold'/>
+          <FontAwesomeIcon icon={faBookmark} size="2x" color="gold" />
         </ActionPart>
       </ActionMenu>
       {/* nr of likes */}
