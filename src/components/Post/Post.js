@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PostHeader from "components/Post/PostHeader";
 import ActionMenu from "components/Post/ActionMenu";
 import AddComment from "components/Post/AddComment";
+import ImageCarousel from "components/Post/ImageCarousel";
 import styled from "styled-components";
 
 const PostContainer = styled.div`
@@ -12,47 +13,28 @@ const PostContainer = styled.div`
   background-color: white;
 `;
 
-const ImageContainer = styled.div`
-  width: 100%;
-  max-height: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  img {
-    width: 100%;
-    object-fit: contain;
-  }
-`;
-
 function Post({ username, avatarUrl, imageUrl }) {
-  const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
-  // ["coment 1", "comment2"];
-  const handlePostComment = () => {
+  const handlePostComment = (commentText) => {
     setComments((prevComments) => {
       return [...prevComments, commentText];
     });
-
-    setCommentText("");
   };
 
   return (
     <PostContainer>
       {/* Header */}
       <PostHeader username={username} avatarUrl={avatarUrl} />
-      <ImageContainer>
-        <img src={imageUrl} alt="post" />
-      </ImageContainer>
+
+      <ImageCarousel imagesUrl={[imageUrl]} />
+
       <ActionMenu />
 
       {comments.map((comment, index) => (
         <div key={comment + index}>{comment}</div>
       ))}
-      <AddComment
-        handlePostComment={(handlePostComment, commentText, setCommentText)}
-      />
+      <AddComment handlePostCommentCallback={handlePostComment} />
     </PostContainer>
   );
 }

@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Avatar, Input, Button } from "antd";
+import { SmileOutlined } from "@ant-design/icons";
 
 const AddCommentContainer = styled.div`
   position: relative;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid lightgray;
 `;
 
 const CommentInput = styled(Input)`
   border: 0;
   border-radius: 0;
-  border-top: 1px solid lightgray;
   padding: 10px 50px 10px 10px;
 
   :hover,
@@ -21,10 +25,7 @@ const CommentInput = styled(Input)`
 `;
 
 const PostButton = styled(Button)`
-  position: absolute;
-  right: 0;
-  padding: 0 10px 0 5px;
-  height: 100%;
+  width: auto;
 
   :hover,
   :focus {
@@ -33,12 +34,29 @@ const PostButton = styled(Button)`
   }
 `;
 
-const AddComment = ({ handlePostComment, commentText, setCommentText }) => {
+const EmojiButton = styled(SmileOutlined)`
+  cursor: pointer;
+  padding-right: 10px;
+  font-size: 20px;
+  color: "#666666";
+`;
+
+const AddComment = ({ handlePostCommentCallback }) => {
+  const [commentText, setCommentText] = useState("");
+
+  const handlePostComment = () => {
+    handlePostCommentCallback(commentText);
+    setCommentText("");
+  };
+
   return (
     <AddCommentContainer>
       {/* input */}
       <CommentInput
+        size="large"
         value={commentText}
+        placeholder="Adauga un comentariu"
+        prefix={<EmojiButton />}
         onChange={(event) => setCommentText(event.target.value)}
       />
       {/* post button */}

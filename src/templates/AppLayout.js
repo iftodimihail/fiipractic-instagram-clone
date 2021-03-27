@@ -13,6 +13,10 @@ const AppContainer = styled.div`
 
 const ChildrenContainer = styled.div`
   margin-top: 80px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const AppLayout = (props) => {

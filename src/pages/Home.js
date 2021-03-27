@@ -12,13 +12,13 @@ const HomeContainer = styled.div`
 `;
 
 const PostsContainer = styled.div`
-  width: 72%;
+  width: 62%;
   display: flex;
   flex-direction: column;
 `;
 
 const SidebarContainer = styled.div`
-  width: 28%;
+  width: 38%;
   right: 0px;
   top: 0px;
   display: flex;
