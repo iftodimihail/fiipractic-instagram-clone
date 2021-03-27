@@ -7,6 +7,7 @@ const PostContainer = styled.div`
   width: 400px;
   border: 1px solid lightgray;
   border-radius: 2px;
+  margin-bottom: 20px;
 `;
 
 const PostHeader = styled.div`
@@ -65,8 +66,16 @@ const PostButton = styled(Button)`
    }
 `;
 
+const Caption = styled.div`
+  padding: 10px;
 
-function Post({username = "edik" , avatarUrl, imageUrl = instagramLogo}) {
+  strong {
+    margin-right: 5px;
+  }
+`;
+
+
+function Post({username = "edik" , avatarUrl, imageUrl, caption}) {
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState([]);
 
@@ -89,9 +98,8 @@ function Post({username = "edik" , avatarUrl, imageUrl = instagramLogo}) {
             <img src={imageUrl} alt="hey you"></img>
         </ImageContainer>
 
-        {comments.map((val, index) => {
-            return <div key={index}>{val}</div>;
-        })}
+        <Caption><strong>{username}</strong>{caption}</Caption>
+        
 
         <AddCommentContainer> 
             <CommentInput value={commentText} onChange={(event) => setCommentText(event.target.value)}/>
