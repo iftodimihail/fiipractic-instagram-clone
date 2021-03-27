@@ -4,6 +4,7 @@ import DropdownMenu from "components/DropdownMenu";
 import UploadModal from "components/UploadModal";
 import { auth } from "utils/firebase";
 import instagramLogo from "assets/instaLogo.png";
+import { useHistory } from "react-router";
 
 const AppContainer = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const AppContent = styled.div`
   justify-content: center;
 `;
 
-function AppLayout({ history, children }) {
+function AppLayout({ children }) {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
 
@@ -57,6 +58,8 @@ function AppLayout({ history, children }) {
 
     return () => unsubscribe();
   }, [user]);
+
+  const history = useHistory();
 
   const navigateToProfile = () => {
     history.push("/profile");
