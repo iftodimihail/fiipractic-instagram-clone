@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Input, message, Modal, Progress, Upload } from "antd";
+import { message, Modal, Progress, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import firebase, { db, storage } from "utils/firebase";
+import { auth, storage } from "utils/firebase";
 import { nanoid } from "nanoid";
 
-function UploadModal({ isOpened, setIsOpen, username, avatarUrl }) {
+function AvatarUploadModal({ isOpened, setIsOpen }) {
   const [file, setFile] = useState();
-  const [photoCaption, setPhotoCaption] = useState("");
   const [progress, setProgress] = useState(0);
 
   const { Dragger } = Upload;
@@ -25,7 +24,7 @@ function UploadModal({ isOpened, setIsOpen, username, avatarUrl }) {
   const handleUpload = () => {
     const imageName = `${file.name}_${nanoid()}`;
 
-    const uploadTask = storage.ref(`images/${imageName}`).put(file);
+    const uploadTask = storage.ref(`avatars/${imageName}`).put(file);
 
     uploadTask.on(
       "stage_changed",
@@ -42,20 +41,15 @@ function UploadModal({ isOpened, setIsOpen, username, avatarUrl }) {
       // complete function
       () => {
         storage
-          .ref("images")
+          .ref("avatars")
           .child(imageName)
           .getDownloadURL()
           .then(async (imageUrl) => {
-            await db.collection("posts").add({
-              caption: photoCaption,
-              imageUrl,
-              avatarUrl,
-              username,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            await auth.currentUser.updateProfile({
+              photoURL: imageUrl,
             });
 
             setIsOpen(false);
-            setPhotoCaption("");
             setFile();
             setProgress(0);
           });
@@ -65,16 +59,11 @@ function UploadModal({ isOpened, setIsOpen, username, avatarUrl }) {
 
   return (
     <Modal
-      title="Upload post"
+      title="Upload avatar"
       visible={isOpened}
       onCancel={() => setIsOpen(false)}
       onOk={handleUpload}
     >
-      <Input
-        placeholder="Photo caption"
-        value={photoCaption}
-        onChange={(e) => setPhotoCaption(e.target.value)}
-      />
       <Dragger {...uploadProps}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
@@ -92,4 +81,4 @@ function UploadModal({ isOpened, setIsOpen, username, avatarUrl }) {
   );
 }
 
-export default UploadModal;
+export default AvatarUploadModal;

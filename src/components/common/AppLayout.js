@@ -60,8 +60,8 @@ function AppLayout({ children }) {
     return () => unsubscribe();
   }, [user]);
 
-  const navigateToProfile = () => {
-    history.push("/profile");
+  const navigateToPage = (linkTo) => {
+    history.push(linkTo);
   };
 
   return (
@@ -71,7 +71,7 @@ function AppLayout({ children }) {
         <DropdownMenu
           username={user?.displayName}
           openUploadModal={() => setIsOpenedModal(true)}
-          navigateToProfile={navigateToProfile}
+          navigateToPage={navigateToPage}
         />
       </Header>
       <AppContentContainer>
@@ -81,6 +81,7 @@ function AppLayout({ children }) {
         isOpened={isOpenedModal}
         setIsOpen={setIsOpenedModal}
         username={user?.displayName}
+        avatarUrl={user?.photoURL}
       />
     </AppContainer>
   );
