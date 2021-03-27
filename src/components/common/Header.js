@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import DropFownMenu from "components/DropDownMenu";
 import instagramLogo from "assets/instaLogo.png";
 import styled from "styled-components";
-import { auth, db } from "utils/firebase";
+import { auth } from "utils/firebase";
 import UploadModal from "components/UploadModal";
-import { useCookies } from "react-cookie";
+import { useHistory } from "react-router";
 
 const HeaderComponent = styled.div`
   width: 900px;
@@ -30,6 +30,7 @@ const HeaderComponent = styled.div`
 function Header() {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -37,6 +38,10 @@ function Header() {
     });
     return () => unsubscribe();
   }, [user]);
+
+  function activateRedirect() {
+    history.push(`/`);
+  }
 
   return (
     <HeaderComponent>

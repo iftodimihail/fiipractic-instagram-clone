@@ -1,11 +1,11 @@
-import { getDefaultNormalizer } from "@testing-library/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, Input, Button } from "antd";
 import styled from "styled-components";
-import instagramLogo from "assets/instaLogo.png";
+import { db } from "utils/firebase";
+import { useHistory } from "react-router";
 
 const PostContainer = styled.div`
-  width: 400px;
+  width: 600px;
   border: 1px solid lightgray;
   border-radius: 4px;
 `;
@@ -21,6 +21,7 @@ const PostHeader = styled.div`
 const UsernameText = styled.span`
   font-weight: 600;
   margin-left: 10px;
+  cursor: pointer;
 `;
 
 const ImageContainer = styled.div`
@@ -33,6 +34,7 @@ const ImageContainer = styled.div`
   > img {
     width: 100%;
     object-fit: contain;
+    max-height: 500px;
   }
 `;
 
@@ -74,9 +76,33 @@ const Caption = styled.div`
   }
 `;
 
-function Post({username, avatarUrl, imageUrl, caption }) {
+function Post({ username, avatarUrl, imageUrl, caption }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const [PhotoComponent, setPhotoUrl] = useState();
+  const history = useHistory();
+
+  const ProfileWithPicture = (profileLink) => {
+    return <Avatar alt={username} src={profileLink}></Avatar>;
+  };
+
+  const ProfileWithoutPicture = () => {
+    return <Avatar alt={username}>{username?.[0]?.toUpperCase()}</Avatar>;
+  };
+
+  useEffect(() => {
+    const users = db.collection("users");
+    if (username) {
+      users?.where("username", "==", username).onSnapshot((snapshot) => {
+        if (snapshot.docs.length > 0) {
+          const myUserTemp = snapshot.docs[0].data();
+          if (myUserTemp.profilepicture !== "-") {
+            setPhotoUrl(ProfileWithPicture(myUserTemp.profilepicture));
+          } else setPhotoUrl(ProfileWithoutPicture());
+        }
+      });
+    }
+  }, [PhotoComponent]);
 
   const handlePostComments = () => {
     setComments((prevComments) => {
@@ -84,19 +110,24 @@ function Post({username, avatarUrl, imageUrl, caption }) {
     });
   };
 
+  function activateRedirect() {
+    history.push(`/${"profile/"}` + username);
+  }
+
   return (
     <PostContainer>
       <PostHeader>
-        <Avatar alt={username} src={avatarUrl}>
+        {/* <Avatar alt={username} src={avatarUrl}>
           {username?.[0]?.toUpperCase()}
-        </Avatar>
-        <UsernameText>{username}</UsernameText>
+        </Avatar> */}
+        {PhotoComponent}
+        <UsernameText onClick={activateRedirect}>{username}</UsernameText>
       </PostHeader>
 
       <ImageContainer>
         <img src={imageUrl} alt="Post" />
       </ImageContainer>
-      
+
       <Caption>
         <strong>{username}</strong>
         {caption}
@@ -104,7 +135,7 @@ function Post({username, avatarUrl, imageUrl, caption }) {
       {comments.map((comment, index) => (
         <div key={comment + index}>{comment}</div>
       ))}
-      
+
       <AddCommentContainer>
         <CommentInput
           value={commentText}
@@ -114,7 +145,6 @@ function Post({username, avatarUrl, imageUrl, caption }) {
           Post
         </PostButton>
       </AddCommentContainer>
-
     </PostContainer>
   );
 }

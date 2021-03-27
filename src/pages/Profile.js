@@ -5,6 +5,8 @@ import firebase, { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import { Button } from "antd";
+import Popup from "reactjs-popup";
+import EditProfileModal from "components/EditProfileModal";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -22,17 +24,18 @@ const ProfileDetails = styled.div`
 
 const MyAvatar = styled(Avatar)`
   align-self: center;
-  margin-right: 75px;
+  margin-right: 50px;
   margin-left: 25px;
   span {
-    font-size: 48px;
+    font-size: 75px;
   }
 `;
 
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
-  height: 60%;
+  height: 65%;
+  width: 400px;
   flex-grow: 1;
 `;
 
@@ -78,6 +81,7 @@ const ProfileStats = styled.span`
   flex-grow: 1;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 0;
   //gap: 130px;
 `;
 
@@ -96,6 +100,11 @@ const PostContainer = styled.div`
   }
 `;
 
+const DescDetail = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const ProfilePosts = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -108,6 +117,10 @@ function Profile() {
   const [followersNo, setFollowersNumber] = useState(0);
   const [followingNo, setFollowingNumber] = useState(0);
   const [followState, setFollowState] = useState("Loading...");
+  const [description, setDescription] = useState("No description");
+  const [PhotoComponent, setPhotoUrl] = useState();
+  const [ButtonComponent, setButtonComponent] = useState(<div></div>);
+  const [name, setName] = useState("Default name");
   const [myUser, setMyUser] = useState();
   const [profile, setProfile] = useState();
   const history = useHistory();
@@ -124,14 +137,17 @@ function Profile() {
   };
 
   async function setButton(user, userProfile) {
-    if (userProfile == user) setFollowState("Edit profile");
-    else if (userProfile == id) {
+    if (userProfile == user) {
+      setFollowState("Edit profile");
+      setButtonComponent(ButtonWithTrigger());
+    } else if (userProfile == id) {
       await db
         .collection("users")
         .doc(user)
         .get()
         .then((myProfile) => {
           if (myProfile.exists) {
+            setButtonComponent(ButtonWithoutTrigger());
             if (myProfile.data().following.includes(userProfile))
               setFollowState("Unfollow");
             else setFollowState("Follow");
@@ -186,6 +202,11 @@ function Profile() {
             const myUserTemp = snapshot.docs[0].data();
             setFollowingNumber(myUserTemp.following.length);
             setFollowersNumber(myUserTemp.followers.length);
+            setDescription(myUserTemp.description);
+            if (myUserTemp.profilepicture !== "-") {
+              setPhotoUrl(ProfileWithPicture(myUserTemp.profilepicture));
+            } else setPhotoUrl(ProfileWithoutPicture());
+            setName(myUserTemp.firstname + " " + myUserTemp.lastname);
           } else {
             history.push(`/${"myprofile"}`);
           }
@@ -211,22 +232,65 @@ function Profile() {
     }
 
     return () => unsubscribe();
-  }, [myUser, profile, followState, followersNo]);
+  }, [
+    myUser,
+    profile,
+    followState,
+    followersNo,
+    followingNo,
+    description,
+    name,
+  ]);
+
+  const ButtonWithTrigger = () => {
+    return (
+      <Popup
+        trigger={
+          <FollowButton onClick={ManageFollow}>{followState}</FollowButton>
+        }
+        modal
+        nested
+      >
+        {(closeFct) => (
+          <EditProfileModal
+            close={closeFct}
+            profileUser={profile}
+          ></EditProfileModal>
+        )}
+      </Popup>
+    );
+  };
+
+  const ButtonWithoutTrigger = () => {
+    return <FollowButton onClick={ManageFollow}>{followState}</FollowButton>;
+  };
+
+  const ProfileWithPicture = (profileLink) => {
+    return <MyAvatar size={128} src={profileLink}></MyAvatar>;
+  };
+
+  const ProfileWithoutPicture = () => {
+    return <MyAvatar size={128}>{profile?.[0]?.toUpperCase()}</MyAvatar>;
+  };
 
   return (
     <ProfileContainer>
       <ProfileDetails>
-        <MyAvatar size={128}>{profile?.[0]?.toUpperCase()}</MyAvatar>
+        {PhotoComponent}
         <ProfileInfo>
           <UserAndButton>
             <Username>{profile}</Username>
-            <FollowButton onClick={ManageFollow}>{followState}</FollowButton>
+            {ButtonComponent}
           </UserAndButton>
           <ProfileStats>
             <Info>Posts: {posts.length}</Info>
             <Info>Followers: {followersNo}</Info>
             <Info>Following: {followingNo}</Info>
           </ProfileStats>
+          <DescDetail>
+            <b>{name}</b>
+          </DescDetail>
+          <DescDetail>{description}</DescDetail>
         </ProfileInfo>
       </ProfileDetails>
       <ProfilePosts>{renderProfilePosts()}</ProfilePosts>

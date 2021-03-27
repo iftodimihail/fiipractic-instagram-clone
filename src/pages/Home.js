@@ -7,6 +7,7 @@ const AppContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 30px;
 `;
 
 function Home() {
@@ -20,11 +21,9 @@ function Home() {
 
   return (
     <AppContainer>
-
       {posts.map((post) => (
         <Post key={post.id} {...post} />
       ))}
-
     </AppContainer>
   );
 }

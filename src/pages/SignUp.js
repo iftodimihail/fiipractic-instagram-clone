@@ -68,6 +68,7 @@ function SignUp() {
           followers: [],
           following: [],
           description: "No description",
+          profilepicture: "-",
         });
       })
       .then(async () => await history.push("/login"))
