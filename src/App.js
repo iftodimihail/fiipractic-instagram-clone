@@ -10,6 +10,7 @@ import Home from "pages/Home";
 import Login from "pages/Login";
 import SignUp from "pages/SignUp";
 import Profile from "pages/Profile";
+import PageLoader from "templates/PageLoader";
 import { createBrowserHistory } from "history";
 import { auth } from "utils/firebase";
 
@@ -23,16 +24,20 @@ const GuardedRoute = ({ auth, redirectTo, ...rest }) => {
 
 function App() {
   const [user, setUser] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsubcribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
+      setIsLoading(false);
     });
 
     return () => unsubcribe();
   }, [user]);
 
-  return (
+  return isLoading ? (
+    <PageLoader />
+  ) : (
     <Router history={history}>
       <Switch>
         {/* home */}

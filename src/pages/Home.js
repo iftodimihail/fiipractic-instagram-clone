@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Post from "components/Post";
+import Post from "components/Post/Post";
 import Sidebar from "components/Sidebar";
 import AppLayout from "templates/AppLayout";
 import { auth, db } from "utils/firebase";
@@ -12,13 +12,13 @@ const HomeContainer = styled.div`
 `;
 
 const PostsContainer = styled.div`
-  width: 65%;
+  width: 72%;
   display: flex;
   flex-direction: column;
 `;
 
 const SidebarContainer = styled.div`
-  width: 35%;
+  width: 28%;
   right: 0px;
   top: 0px;
   display: flex;
