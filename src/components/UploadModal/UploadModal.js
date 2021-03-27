@@ -4,9 +4,8 @@ import { InboxOutlined } from "@ant-design/icons";
 import firebase, { db, storage } from "utils/firebase";
 import { nanoid } from "nanoid";
 
-function UploadModal({ isOpened, setIsOpen, username }) {
+function UploadModal(props) {
   const [file, setFile] = useState();
-  const [photoCaption, setPhotoCaption] = useState("");
   const [progress, setProgress] = useState(0);
 
   const { Dragger } = Upload;
@@ -25,7 +24,7 @@ function UploadModal({ isOpened, setIsOpen, username }) {
   const handleUpload = () => {
     const imageName = `${file.name}_${nanoid()}`;
 
-    const uploadTask = storage.ref(`images/${imageName}`).put(file);
+    const uploadTask = storage.ref(`${props.dbColumn}/${imageName}`).put(file);
 
     uploadTask.on(
       "stage_changed",
@@ -42,19 +41,13 @@ function UploadModal({ isOpened, setIsOpen, username }) {
       // complete function
       () => {
         storage
-          .ref("images")
+          .ref(props.dbColumn)
           .child(imageName)
           .getDownloadURL()
           .then(async (imageUrl) => {
-            await db.collection("posts").add({
-              caption: photoCaption,
-              imageUrl,
-              username,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            });
+            props.imageWasUploaded(imageUrl);
 
-            setIsOpen(false);
-            setPhotoCaption("");
+            props.setIsOpen(false);
             setFile();
             setProgress(0);
           });
@@ -65,15 +58,11 @@ function UploadModal({ isOpened, setIsOpen, username }) {
   return (
     <Modal
       title="Upload post"
-      visible={isOpened}
-      onCancel={() => setIsOpen(false)}
+      visible={props.isOpened}
+      onCancel={() => props.setIsOpen(false)}
       onOk={handleUpload}
     >
-      <Input
-        placeholder="Photo caption"
-        value={photoCaption}
-        onChange={(e) => setPhotoCaption(e.target.value)}
-      />
+      {props.children}
       <Dragger {...uploadProps}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />

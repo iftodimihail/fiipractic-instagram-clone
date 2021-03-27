@@ -1,6 +1,6 @@
 import React, { Children, useEffect, useState } from "react";
 import styled from "styled-components";
-import UploadModal from "components/UploadModal";
+import PostUploadModal from "components/UploadModal/PostUploadModal";
 import Navbar from "components/Navbar";
 
 const AppContainer = styled.div`
@@ -29,9 +29,10 @@ const AppLayout = (props) => {
 
       <ChildrenContainer>{props.children}</ChildrenContainer>
 
-      <UploadModal
+      <PostUploadModal
         isOpened={isOpenModal}
         setIsOpen={setIsOpenModal}
+        avatarUrl={props.user?.photoURL}
         username={props.user?.displayName}
       />
     </AppContainer>

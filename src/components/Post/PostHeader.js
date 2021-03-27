@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
-import { Avatar } from "antd";
+import { Avatar, Menu, Dropdown } from "antd";
 import styled from "styled-components";
 
 const PostHeaderContainer = styled.div`
@@ -21,6 +21,14 @@ const UsernameText = styled.span`
   margin-left: 10px;
 `;
 
+const menu = (
+  <Menu>
+    <Menu.Item key="delete" onClick={console.log("delete")}>
+      Delete
+    </Menu.Item>
+  </Menu>
+);
+
 const PostHeader = ({ username, avatarUrl }) => {
   return (
     <PostHeaderContainer>
@@ -31,7 +39,13 @@ const PostHeader = ({ username, avatarUrl }) => {
         <UsernameText>{username}</UsernameText>
       </Username>
 
-      <FontAwesomeIcon icon={faEllipsisH} />
+      <Dropdown overlay={menu} placement="topRight">
+        <FontAwesomeIcon
+          icon={faEllipsisH}
+          style={{ cursor: "pointer" }}
+          trigger={["click"]}
+        />
+      </Dropdown>
     </PostHeaderContainer>
   );
 };
