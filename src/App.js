@@ -7,7 +7,6 @@ import LogIn from "pages/LogIn";
 import Profile from "pages/Profile";
 import AppLayout from "components/common/AppLayout";
 import { createBrowserHistory } from "history";
-import AuthLayout from "components/common/AuthLayout";
 
 const history = createBrowserHistory();
 
@@ -15,10 +14,8 @@ function App() {
   return (
     <Router history={history}>
       <Switch>
-        <AuthLayout>
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/login" component={LogIn} />
-        </AuthLayout>
+        <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/login" component={LogIn} />
         <AppLayout>
           <Route exact path="/" component={Home} />
           <Route exact path="/profile" component={Profile} />
