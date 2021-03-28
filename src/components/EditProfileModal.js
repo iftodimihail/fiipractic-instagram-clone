@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { message, Input, Upload, Avatar } from "antd";
 import { nanoid } from "nanoid";
 import firebase, { db, storage } from "utils/firebase";
+import { CameraOutlined } from "@ant-design/icons";
 
 const EditProfileModalComponent = styled.div`
   font-size: 12px;
@@ -59,20 +60,43 @@ const CloseButton = styled.button`
   /* border: 1px solid #cfcece; */
 `;
 
-const MyAvatar = styled(Avatar)`
-  align-self: center;
-  /* align-items: center; */
-  align-content: center;
+const CameraIcon = styled(CameraOutlined)`
+  font-size: 56px;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+`;
+
+const AvatarWrapper = styled.div`
+  position: relative;
   margin-right: 10px;
   margin-left: 10px;
-  width: 100px;
-  height: 100px;
+  width: 128px;
+  height: 128px;
+  ${CameraIcon} {
+    display: none;
+  }
+  :hover {
+    ${CameraIcon} {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+  }
+`;
+
+const MyAvatar = styled(Avatar)`
+  align-self: center;
+
   span {
     font-size: 60px;
-    /* position: absolute;
-    top: 30%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%); */
   }
 `;
 
@@ -180,8 +204,10 @@ function EditProfileModal({ close, profileUser }) {
       <ContentContainer>
         <MyDragger {...uploadProps}>
           <p className="ant-upload-drag-icon">
-            {/* <InboxOutlined /> */}
-            {PhotoComponent}
+            <AvatarWrapper>
+              <CameraIcon/>
+              {PhotoComponent}
+            </AvatarWrapper>
           </p>
         </MyDragger>
         <ProfileInfoContainer>
@@ -201,7 +227,7 @@ function EditProfileModal({ close, profileUser }) {
           <TextArea
             placeholder="Description"
             autoSize={{ minRows: 2, maxRows: 2 }}
-            // showCount 
+            // showCount
             maxLength={66}
             value={desc}
             onChange={(e) => setDescription(e.target.value)}

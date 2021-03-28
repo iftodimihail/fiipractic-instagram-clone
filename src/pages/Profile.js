@@ -93,6 +93,10 @@ const PostContainer = styled.div`
   width: 280px;
   height: 280px;
   margin-bottom: 30px;
+  margin-right: 20px;
+  :nth-child(3n+3){
+    margin-bottom: 0;
+  }
   img {
     width: 100%;
     height: 100%;
@@ -109,7 +113,6 @@ const ProfilePosts = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 900px;
-  justify-content: space-between;
 `;
 
 function Profile() {
