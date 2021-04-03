@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import DropdownMenu from "components/DropdownMenu";
-import UploadModal from "components/UploadModal";
-import { auth } from "utils/firebase";
 import instagramLogo from "assets/instaLogo.png";
+import DropdownMenu from "components/DropdownMenu";
+import UploadModal from "components/PostUploadModal";
+import { auth } from "utils/firebase";
+import { useHistory } from "react-router";
 
 const AppContainer = styled.div`
   display: flex;
@@ -14,14 +15,14 @@ const AppContainer = styled.div`
 const Header = styled.div`
   width: 100%;
   position: sticky;
-  top: 0;
   z-index: 10;
+  top: 0;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   padding: 12px;
   border-bottom: 1px solid lightgray;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: white;
 
   img {
@@ -46,9 +47,10 @@ const AppContent = styled.div`
   justify-content: center;
 `;
 
-function AppLayout({ history, children }) {
+function AppLayout({ children }) {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -58,8 +60,8 @@ function AppLayout({ history, children }) {
     return () => unsubscribe();
   }, [user]);
 
-  const navigateToProfile = () => {
-    history.push("/profile");
+  const navigateToPage = (linkTo) => {
+    history.push(linkTo);
   };
 
   return (
@@ -67,9 +69,9 @@ function AppLayout({ history, children }) {
       <Header>
         <img src={instagramLogo} alt="instagram logo" />
         <DropdownMenu
-          navigateToProfile={navigateToProfile}
           username={user?.displayName}
           openUploadModal={() => setIsOpenedModal(true)}
+          navigateToPage={navigateToPage}
         />
       </Header>
       <AppContentContainer>
@@ -79,6 +81,7 @@ function AppLayout({ history, children }) {
         isOpened={isOpenedModal}
         setIsOpen={setIsOpenedModal}
         username={user?.displayName}
+        avatarUrl={user?.photoURL}
       />
     </AppContainer>
   );

@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import { Input, message, Modal, Progress, Upload } from "antd";
+import { message, Upload as AntUpload, Modal, Progress } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import firebase, { db, storage } from "utils/firebase";
 import { nanoid } from "nanoid";
+import { storage } from "utils/firebase";
 
-function UploadModal({ isOpened, setIsOpen, username }) {
+function UploadModal({
+  title,
+  onSuccess,
+  isOpened,
+  setIsOpen,
+  folderName,
+  children,
+}) {
   const [file, setFile] = useState();
-  const [photoCaption, setPhotoCaption] = useState("");
   const [progress, setProgress] = useState(0);
 
-  const { Dragger } = Upload;
+  const { Dragger } = AntUpload;
 
   const uploadProps = {
     onRemove: () => {
@@ -24,7 +30,8 @@ function UploadModal({ isOpened, setIsOpen, username }) {
 
   const handleUpload = () => {
     const imageName = `${file.name}_${nanoid()}`;
-    const uploadTask = storage.ref(`images/${imageName}`).put(file);
+
+    const uploadTask = storage.ref(`${folderName}/${imageName}`).put(file);
 
     uploadTask.on(
       "stage_changed",
@@ -37,23 +44,17 @@ function UploadModal({ isOpened, setIsOpen, username }) {
         setProgress(progress);
       },
       // error function
-      (error) => message.error(`${imageName} failed to upload`),
+      (error) => message.error(`${imageName} failed to upload.`),
       // complete function
       () => {
         storage
-          .ref("images")
+          .ref(folderName)
           .child(imageName)
           .getDownloadURL()
           .then(async (imageUrl) => {
-            await db.collection("posts").add({
-              caption: photoCaption,
-              imageUrl,
-              username,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            });
+            await onSuccess(imageUrl);
 
             setIsOpen(false);
-            setPhotoCaption("");
             setFile();
             setProgress(0);
           });
@@ -63,16 +64,12 @@ function UploadModal({ isOpened, setIsOpen, username }) {
 
   return (
     <Modal
-      title="Upload post"
+      title={title}
       visible={isOpened}
       onCancel={() => setIsOpen(false)}
       onOk={handleUpload}
     >
-      <Input
-        placeholder="Photo caption"
-        value={photoCaption}
-        onChange={(e) => setPhotoCaption(e.target.value)}
-      />
+      {children}
       <Dragger {...uploadProps}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
@@ -85,7 +82,7 @@ function UploadModal({ isOpened, setIsOpen, username }) {
           company data or other band files
         </p>
       </Dragger>
-      <Progress percent={progress}></Progress>
+      <Progress percent={progress} />
     </Modal>
   );
 }

@@ -6,13 +6,10 @@ import SignUp from "pages/SignUp";
 import LogIn from "pages/LogIn";
 import Profile from "pages/Profile";
 import AppLayout from "components/common/AppLayout";
-import { createBrowserHistory } from "history";
-
-const history = createBrowserHistory();
 
 function App() {
   return (
-    <Router history={history}>
+    <Router>
       <Switch>
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/login" component={LogIn} />
