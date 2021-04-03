@@ -1,83 +1,24 @@
-import React, { useState } from "react";
-import { message, Modal, Progress, Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
-import { auth, storage } from "utils/firebase";
-import { nanoid } from "nanoid";
+import React from "react";
+import { auth } from "utils/firebase";
+import UploadModal from "./common/UploadModal";
 
-function AvatarUploadModal({ isOpened, setIsOpen }) {
-  const [file, setFile] = useState();
-  const [progress, setProgress] = useState(0);
+function AvatarUploadModal({ isOpened, setIsOpen, setAvatar }) {
+  async function onSuccess(imageUrl) {
+    await auth.currentUser.updateProfile({
+      photoURL: imageUrl,
+    });
 
-  const { Dragger } = Upload;
-
-  const uploadProps = {
-    onRemove: () => {
-      setFile(null);
-    },
-    beforeUpload: (file) => {
-      setFile(file);
-      return false;
-    },
-    fileList: file ? [file] : [],
-  };
-
-  const handleUpload = () => {
-    const imageName = `${file.name}_${nanoid()}`;
-
-    const uploadTask = storage.ref(`avatars/${imageName}`).put(file);
-
-    uploadTask.on(
-      "stage_changed",
-      // progress function
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-
-        setProgress(progress);
-      },
-      // error function
-      (error) => message.error(`${imageName} failed to upload.`),
-      // complete function
-      () => {
-        storage
-          .ref("avatars")
-          .child(imageName)
-          .getDownloadURL()
-          .then(async (imageUrl) => {
-            await auth.currentUser.updateProfile({
-              photoURL: imageUrl,
-            });
-
-            setIsOpen(false);
-            setFile();
-            setProgress(0);
-          });
-      }
-    );
-  };
+    setAvatar(imageUrl);
+  }
 
   return (
-    <Modal
+    <UploadModal
       title="Upload avatar"
-      visible={isOpened}
-      onCancel={() => setIsOpen(false)}
-      onOk={handleUpload}
-    >
-      <Dragger {...uploadProps}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">
-          Click or drag file to this area to upload
-        </p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibit from uploading
-          company data or other band files
-        </p>
-      </Dragger>
-      <Progress percent={progress} />
-    </Modal>
+      isOpened={isOpened}
+      setIsOpen={setIsOpen}
+      onSuccess={onSuccess}
+      folderName="avatars"
+    />
   );
 }
 

@@ -3,7 +3,7 @@ import { Avatar } from "antd";
 import { CameraOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { auth, db } from "utils/firebase";
-import UploadModal from "components/common/UploadModal";
+import AvatarUploadModal from "components/AvatarUploadModal";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -103,8 +103,14 @@ const PostContainer = styled.div`
 `;
 
 function Profile() {
+  const [avatar, setAvatar] = useState("");
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(
+    () => auth.onAuthStateChanged((user) => setAvatar(user.photoURL)),
+    []
+  );
 
   const renderProfilePosts = () => {
     return posts.map(({ imageUrl }, index) => {
@@ -133,18 +139,12 @@ function Profile() {
       });
   }, []);
 
-  async function onAvatarUploadSuccess(imageUrl) {
-    auth.currentUser.updateProfile({
-      photoURL: imageUrl,
-    });
-  }
-
   return (
     <ProfileContainer>
       <ProfileDetails>
         <AvatarWrapper>
           <CameraIcon onClick={() => setIsModalOpen(true)} />
-          <MyAvatar size={128} src={auth.currentUser?.photoURL}>
+          <MyAvatar size={128} src={avatar}>
             {auth.currentUser?.displayName?.[0]?.toUpperCase()}
           </MyAvatar>
         </AvatarWrapper>
@@ -156,12 +156,10 @@ function Profile() {
         </ProfileInfo>
       </ProfileDetails>
       <ProfilePosts>{renderProfilePosts()}</ProfilePosts>
-      <UploadModal
-        title="Avatar upload"
+      <AvatarUploadModal
         isOpened={isModalOpen}
         setIsOpen={setIsModalOpen}
-        folderName="avatars"
-        onSuccess={onAvatarUploadSuccess}
+        setAvatar={setAvatar}
       />
     </ProfileContainer>
   );
