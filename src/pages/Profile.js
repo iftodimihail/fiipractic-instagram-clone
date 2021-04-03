@@ -3,7 +3,7 @@ import { Avatar } from "antd";
 import { CameraOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { auth, db } from "utils/firebase";
-import AvatarUploadModal from "components/AvatarUploadModal";
+import UploadModal from "components/common/UploadModal";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -133,6 +133,12 @@ function Profile() {
       });
   }, []);
 
+  async function onAvatarUploadSuccess(imageUrl) {
+    auth.currentUser.updateProfile({
+      photoURL: imageUrl,
+    });
+  }
+
   return (
     <ProfileContainer>
       <ProfileDetails>
@@ -150,7 +156,13 @@ function Profile() {
         </ProfileInfo>
       </ProfileDetails>
       <ProfilePosts>{renderProfilePosts()}</ProfilePosts>
-      <AvatarUploadModal isOpened={isModalOpen} setIsOpen={setIsModalOpen} />
+      <UploadModal
+        title="Avatar upload"
+        isOpened={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        folderName="avatars"
+        onSuccess={onAvatarUploadSuccess}
+      />
     </ProfileContainer>
   );
 }

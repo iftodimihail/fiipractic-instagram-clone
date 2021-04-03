@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
 import DropdownMenu from "components/DropdownMenu";
-import UploadModal from "components/UploadModal";
+import UploadModal from "components/PostUploadModal";
 import { auth } from "utils/firebase";
 import { useHistory } from "react-router";
 
