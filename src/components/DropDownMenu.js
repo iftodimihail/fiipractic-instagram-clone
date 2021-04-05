@@ -6,9 +6,15 @@ import styled from "styled-components";
 const Username = styled.span`
   cursor: pointer;
 `;
-function DropDownMenu({ username, openUploadModal }) {
+function DropDownMenu({ navigateToPage, username, openUploadModal }) {
   const menu = (
     <Menu>
+      <Menu.Item key="home" onClick={() => navigateToPage("/")}>
+        Home
+      </Menu.Item>
+      <Menu.Item key="profile" onClick={() => navigateToPage("/profile")}>
+        MyProfile
+      </Menu.Item>
       <Menu.Item key="upload" onClick={openUploadModal}>
         Upload
       </Menu.Item>
