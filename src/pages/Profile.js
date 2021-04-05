@@ -8,6 +8,8 @@ import { Button } from "antd";
 import Popup from "reactjs-popup";
 import EditProfileModal from "components/EditProfileModal";
 
+import MiniPost from "components/MiniPost";
+
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -89,20 +91,7 @@ const Info = styled.span`
   font-size: 16px;
 `;
 
-const PostContainer = styled.div`
-  width: 280px;
-  height: 280px;
-  margin-bottom: 30px;
-  margin-right: 20px;
-  :nth-child(3n+3){
-    margin-bottom: 0;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
+
 
 const DescDetail = styled.div`
   display: flex;
@@ -130,13 +119,19 @@ function Profile() {
   const { id } = useParams();
 
   const renderProfilePosts = () => {
-    return posts.map(({ imageUrl }, index) => {
-      return (
-        <PostContainer key={index}>
-          <img src={imageUrl} alt="post"></img>
-        </PostContainer>
-      );
-    });
+    // return posts.map(({ imageUrl }, index) => {
+    //   return (
+    //     <PostContainer key={index}>
+    //       <img src={imageUrl} alt="post"></img>
+    //       <ActionBar>
+    //         {/* <TextBox>{!likes ? "0" : likes.length}</TextBox>  */}
+    //         <HeartFilledRed />
+    //         {/* <TextBox>{!timestamp ? "0" : timestamp.length}</TextBox>  */}
+    //         <CommentImg />
+    //       </ActionBar>
+    //     </PostContainer>
+    //   );
+    // });
   };
 
   async function setButton(user, userProfile) {
@@ -296,7 +291,11 @@ function Profile() {
           <DescDetail>{description}</DescDetail>
         </ProfileInfo>
       </ProfileDetails>
-      <ProfilePosts>{renderProfilePosts()}</ProfilePosts>
+      <ProfilePosts>
+        {posts.map((post) => (
+          <MiniPost key={post.id} {...post} />
+        ))}
+      </ProfilePosts>
     </ProfileContainer>
   );
 }

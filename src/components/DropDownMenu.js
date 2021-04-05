@@ -25,7 +25,13 @@ function ValidMenu(isLoggedIn, openUploadModal, navigateToProfile) {
         <Menu.Item key="upload" onClick={openUploadModal}>
           Upload
         </Menu.Item>
-        <Menu.Item key="logout" onClick={() => auth.signOut()}>
+        <Menu.Item
+          key="logout"
+          onClick={() => {
+            auth.signOut();
+            history.push(`/`);
+          }}
+        >
           Sign out
         </Menu.Item>
       </Menu>

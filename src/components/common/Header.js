@@ -36,12 +36,9 @@ function Header() {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
     });
+    // if (!auth.isLoggedIn) history.push(`/${"login"}`);
     return () => unsubscribe();
   }, [user]);
-
-  function activateRedirect() {
-    history.push(`/`);
-  }
 
   return (
     <HeaderComponent>

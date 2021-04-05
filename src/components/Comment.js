@@ -36,10 +36,6 @@ const CommentText = styled.span`
   margin-left: 0px;
   padding-right: 60px;
   font-size: 14px;
-  cursor: pointer;
-  :hover {
-    color: #666666;
-  }
 `;
 
 const ActionButton = styled(Button)`
