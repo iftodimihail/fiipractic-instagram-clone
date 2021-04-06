@@ -12,6 +12,7 @@
     "firebase-tools": "^9.6.1",
     "firestore": "^1.1.6",
     "history": "^5.0.0",
+    "moment": "^2.29.1",
     "monoid": "^0.2.0",
     "react": "^17.0.1",
     "react-client-session": "0.0.7",

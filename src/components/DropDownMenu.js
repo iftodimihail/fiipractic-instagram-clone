@@ -7,6 +7,12 @@ import { useHistory } from "react-router";
 const Username = styled.span`
   cursor: pointer;
   font-weight: bold;
+  font-size: 15px;
+  margin-right: 15px;
+  :hover{
+    color: #4b4c52;
+    font-size: 15.1px;
+  }
 `;
 
 function ValidMenu(isLoggedIn, openUploadModal, navigateToProfile) {
@@ -29,7 +35,7 @@ function ValidMenu(isLoggedIn, openUploadModal, navigateToProfile) {
           key="logout"
           onClick={() => {
             auth.signOut();
-            history.push(`/`);
+            history.push(`/login`);
           }}
         >
           Sign out

@@ -5,6 +5,11 @@ import styled from "styled-components";
 import { auth } from "utils/firebase";
 import UploadModal from "components/UploadModal";
 import { useHistory } from "react-router";
+import {
+  HomeOutlined,
+  MessageOutlined,
+  AppstoreOutlined,
+} from "@ant-design/icons";
 
 const HeaderComponent = styled.div`
   width: 900px;
@@ -12,18 +17,35 @@ const HeaderComponent = styled.div`
   z-index: 10;
   top: 0;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   padding: 12px;
   border-bottom: 1px solid lightgray;
   margin-bottom: 10px;
   background-color: white;
   img {
+    margin-top: 10px;
     height: 40px;
     object-fit: contain;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+  }
+`;
+
+const ActionMenu = styled.div`
+  margin-left: 15px;
+  display: flex;
+  flex-direction: row;
+  font-size: 25px;
+`;
+const ActionButton = styled.div`
+  margin-right: 15px;
+  cursor: pointer;
+  :hover{
+    color: #4b4c52;
+    font-size: 25.3px;
   }
 `;
 
@@ -40,8 +62,23 @@ function Header() {
     return () => unsubscribe();
   }, [user]);
 
+  const Redirect = (path) => {
+    history.push(`/${path}`);
+  }
+
   return (
     <HeaderComponent>
+      <ActionMenu>
+        <ActionButton onClick={() => Redirect("home")}>
+          <HomeOutlined title="Home" />
+        </ActionButton>
+        <ActionButton onClick={() => Redirect("feed")}>
+          <AppstoreOutlined title="News Feed" />
+        </ActionButton>
+        <ActionButton>
+          <MessageOutlined title="Inbox" />
+        </ActionButton>
+      </ActionMenu>
       <img src={instagramLogo} alt="instagram logo"></img>
       <DropFownMenu
         username={user ? user.displayName : "Menu"}

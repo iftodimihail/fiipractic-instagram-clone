@@ -118,22 +118,6 @@ function Profile() {
   const history = useHistory();
   const { id } = useParams();
 
-  const renderProfilePosts = () => {
-    // return posts.map(({ imageUrl }, index) => {
-    //   return (
-    //     <PostContainer key={index}>
-    //       <img src={imageUrl} alt="post"></img>
-    //       <ActionBar>
-    //         {/* <TextBox>{!likes ? "0" : likes.length}</TextBox>  */}
-    //         <HeartFilledRed />
-    //         {/* <TextBox>{!timestamp ? "0" : timestamp.length}</TextBox>  */}
-    //         <CommentImg />
-    //       </ActionBar>
-    //     </PostContainer>
-    //   );
-    // });
-  };
-
   async function setButton(user, userProfile) {
     if (userProfile == user) {
       setFollowState("Edit profile");
