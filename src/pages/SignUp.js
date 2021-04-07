@@ -71,7 +71,7 @@ function SignUp() {
           profilepicture: "-",
         });
       })
-      .then(async () => await history.push("/login"))
+      .then(async () => await history.push("/home"))
       .catch((err) => setErrorMessage(err.message));
   };
 
