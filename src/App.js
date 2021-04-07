@@ -6,6 +6,7 @@ import "./App.css";
 import SignUp from "pages/SignUp";
 import Login from "pages/Login";
 import Profile from "pages/Profile";
+import Messaages from "pages/Messages";
 import { createBrowserHistory } from "history";
 import AppLayout from "components/common/AppLayout";
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/profile/:id">
             <Profile />
           </Route>
+          <Route exact path="/pm" component={Messaages} />
         </AppLayout>
       </Switch>
     </Router>

@@ -75,7 +75,7 @@ function Header() {
         <ActionButton onClick={() => Redirect("feed")}>
           <AppstoreOutlined title="News Feed" />
         </ActionButton>
-        <ActionButton>
+        <ActionButton onClick={() => Redirect("pm")}>
           <MessageOutlined title="Inbox" />
         </ActionButton>
       </ActionMenu>
