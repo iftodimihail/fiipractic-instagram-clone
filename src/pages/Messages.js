@@ -2,18 +2,34 @@ import React, { useEffect, useState } from "react";
 import firebase, { auth, db } from "utils/firebase";
 import styled from "styled-components";
 import User from "components/User";
+import Conversation from "components/Conversation";
 
 const MessageContainer = styled.div`
   width: 900px;
   max-height: 100%;
+  display: flex;
+  flex-direction: row;
 `;
 
 const UserList = styled.div`
-  height: 100%;
+  height: 90vh;
+  overflow-y: auto;
   width: 300px;
   display: flex;
   flex-direction: column;
-  /* overflow-y: scroll; */
+  border: 1px solid lightgray;
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cccccc;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #bfbfbf;
+  }
 `;
 
 const ActionWrapper = styled.div`
@@ -21,6 +37,22 @@ const ActionWrapper = styled.div`
 `;
 
 const InfoMsg = styled.div`
+  text-align: center;
+  font-size: 12px;
+  margin: 30px 20px;
+`;
+
+const ConversationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 90vh;
+  overflow-y: auto;
+  width: 600px;
+  border: 1px solid lightgray;
+`;
+
+const InfoSelectUser = styled.div`
   text-align: center;
   font-size: 12px;
   margin: 30px 20px;
@@ -66,7 +98,7 @@ const Messaages = () => {
         {users.length > 0 &&
           users.map((user) => (
             <ActionWrapper
-              onClick={() => setActiveConversation(user.username)}
+              onClick={() => setActiveConversation(user)}
               key={user.id}
             >
               <User key={user.id} {...user}></User>{" "}
@@ -77,6 +109,18 @@ const Messaages = () => {
           be followed by that person.
         </InfoMsg>
       </UserList>
+      <ConversationContainer>
+        {!activeConversation || activeConversation === "none" ? (
+          <InfoSelectUser>
+            You need to select a user in order to start a conversation.
+          </InfoSelectUser>
+        ) : (
+          <Conversation
+            myUsername={myUser}
+            convUser={activeConversation}
+          ></Conversation>
+        )}
+      </ConversationContainer>
     </MessageContainer>
   );
 };

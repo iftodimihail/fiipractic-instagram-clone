@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Avatar, Button } from "antd";
+import { Avatar} from "antd";
 
 const UserComponent = styled.div`
   background-color: #fafafa;
   height: 80px;
   margin-top: 10px;
   margin-left: 5px;
+  margin-right: 5px;
   display: flex;
   flex-direction: row;
+  :hover{
+    background-color: #e6e6e6;
+  }
 `;
 
 const MyAvatar = styled(Avatar)`
@@ -24,7 +28,7 @@ const MyAvatar = styled(Avatar)`
 `;
 
 const InfoComponent = styled.div`
-  margin: 10px 5px;
+  margin: 10px 8px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
