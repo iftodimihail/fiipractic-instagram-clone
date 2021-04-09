@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
-import Post from "components/Post";
-import { auth } from "utils/firebase";
 import DropDownMenu from "components/DropDownMenu";
-import UploadModal from "components/UploadModal";
+import UploadModal from "components/PostUploadModal";
+import { auth } from "utils/firebase";
 import { useHistory } from "react-router";
 
 const AppContainer = styled.div`
@@ -12,6 +11,7 @@ const AppContainer = styled.div`
   align-items: center;
   flex-direction: column;
 `;
+
 const Header = styled.div`
   width: 100%;
   position: sticky;
@@ -32,10 +32,13 @@ const Header = styled.div`
     transform: translateX(-50%);
   }
 `;
+
 const AppContentContainer = styled.div`
-  padding: 24 px 0;
+  padding: 24px 0;
   height: 100%;
+  width: 100%;
 `;
+
 const AppContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,19 +48,20 @@ const AppContent = styled.div`
 
 function AppLayout({ children }) {
   const [user, setUser] = useState();
-  const history = useHistory();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
-
-  const navigateToPage = (linkTo) => {
-    history.push(linkTo);
-  };
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
     });
+
     return () => unsubscribe();
   }, [user]);
+
+  const navigateToPage = (linkTo) => {
+    history.push(linkTo);
+  };
 
   return (
     <AppContainer>
@@ -81,4 +85,5 @@ function AppLayout({ children }) {
     </AppContainer>
   );
 }
+
 export default AppLayout;

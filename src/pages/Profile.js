@@ -96,25 +96,33 @@ const PostContainer = styled.div`
 `;
 
 function Profile() {
+  const [avatar, setAvatar] = useState("");
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(
+    () => auth.onAuthStateChanged((user) => setAvatar(user.photoURL)),
+    []
+  );
 
   const renderProfilePosts = () => {
     return posts.map(({ imageUrl }, index) => {
       return (
         <PostContainer key={index}>
-          <img src={imageUrl} alt="myprofileimage" />
+          <img src={imageUrl} alt="post" />
         </PostContainer>
       );
     });
   };
+
   useEffect(() => {
     db.collection("posts")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
-        const filteredPosts = snapshot.docs.filter((doc) => {
-          return doc.data().username === auth.currentUser?.displayName;
-        });
+        const filteredPosts = snapshot.docs.filter(
+          (doc) => doc.data().username === auth.currentUser?.displayName
+        );
+
         return setPosts(
           filteredPosts.map((post) => ({
             id: post.id,
@@ -123,12 +131,13 @@ function Profile() {
         );
       });
   }, []);
+
   return (
     <ProfileContainer>
       <ProfileDetails>
         <AvatarWrapper>
           <CameraIcon onClick={() => setIsModalOpen(true)} />
-          <MyAvatar size={128} src={auth.currentUser?.photoURL}>
+          <MyAvatar size={128} src={avatar}>
             {auth.currentUser?.displayName?.[0]?.toUpperCase()}
           </MyAvatar>
         </AvatarWrapper>
@@ -140,8 +149,13 @@ function Profile() {
         </ProfileInfo>
       </ProfileDetails>
       <ProfilePosts>{renderProfilePosts()}</ProfilePosts>
-      <AvatarUploadModal isOpened={isModalOpen} setIsOpen={setIsModalOpen} />
+      <AvatarUploadModal
+        isOpened={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        setAvatar={setAvatar}
+      />
     </ProfileContainer>
   );
 }
+
 export default Profile;

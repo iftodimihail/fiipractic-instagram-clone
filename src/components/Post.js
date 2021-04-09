@@ -128,6 +128,7 @@ const CommentContainer = styled.div`
     }
   }
 `;
+
 function Post({ id, username, avatarUrl, imageUrl, caption }) {
   const [likes, setLikes] = useState([]);
   const [alreadyLiked, setAlreadyLiked] = useState();
