@@ -5,7 +5,7 @@ import styled from "styled-components";
 import firebase, { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
 import Comment from "components/Comment";
-import Like from "components/Like";
+import UserInModal from "components/common/UserInModal";
 
 const PostContainer = styled.div`
   width: 600px;
@@ -178,7 +178,7 @@ function Post({ id, username, imageUrl, caption }) {
 
   useEffect(() => {
     postCommentsCollection
-      .orderBy("timestamp", "desc")
+      .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
         setComments(
           snapshot.docs.map((doc) => ({
@@ -301,7 +301,7 @@ function Post({ id, username, imageUrl, caption }) {
           footer={null}
         >
           {likes.map((like) => (
-            <Like key={like.id} {...like}></Like>
+            <UserInModal key={like.id} {...like}></UserInModal>
           ))}
         </Modal>
         <Modal
@@ -311,10 +311,7 @@ function Post({ id, username, imageUrl, caption }) {
           footer={null}
         >
           {comments.map((comment) => (
-            <Comment
-              key={comment.id}
-              {...comment}
-            ></Comment>
+            <Comment key={comment.id} {...comment}></Comment>
           ))}
         </Modal>
       </ActionMenu>
@@ -325,7 +322,7 @@ function Post({ id, username, imageUrl, caption }) {
       {comments.slice(0, 2).map((comment) => (
         <CommentContainer key={comment.id}>
           <div>
-            <strong>{comment.username}</strong>
+              <strong>{comment.username}</strong>
             {comment.commentText}
           </div>
           {ShowDeleteButton(comment)}

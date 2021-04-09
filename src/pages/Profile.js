@@ -4,10 +4,10 @@ import styled from "styled-components";
 import firebase, { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import Popup from "reactjs-popup";
 import EditProfileModal from "components/EditProfileModal";
-
+import UserInModal from "components/common/UserInModal";
 import MiniPost from "components/MiniPost";
 
 const ProfileContainer = styled.div`
@@ -89,9 +89,17 @@ const ProfileStats = styled.span`
 
 const Info = styled.span`
   font-size: 16px;
+  :hover {
+      color: #666666;
+    }
+    cursor: pointer;
+  :nth-child(1) {
+    cursor: default;
+    :hover {
+      color: black;
+    }
+  }
 `;
-
-
 
 const DescDetail = styled.div`
   display: flex;
@@ -108,6 +116,10 @@ function Profile() {
   const [posts, setPosts] = useState([]);
   const [followersNo, setFollowersNumber] = useState(0);
   const [followingNo, setFollowingNumber] = useState(0);
+  const [followersList, setFollowersList] = useState([]);
+  const [followingList, setFollowingList] = useState([]);
+  const [openedFollowingModal, setOpenedFollowingModal] = useState(false);
+  const [openedFollowersModal, setOpenedFollowersModal] = useState(false);
   const [followState, setFollowState] = useState("Loading...");
   const [description, setDescription] = useState("No description");
   const [PhotoComponent, setPhotoUrl] = useState();
@@ -184,6 +196,8 @@ function Profile() {
             const myUserTemp = snapshot.docs[0].data();
             setFollowingNumber(myUserTemp.following.length);
             setFollowersNumber(myUserTemp.followers.length);
+            setFollowingList(myUserTemp.following);
+            setFollowersList(myUserTemp.followers);
             setDescription(myUserTemp.description);
             if (myUserTemp.profilepicture !== "-") {
               setPhotoUrl(ProfileWithPicture(myUserTemp.profilepicture));
@@ -219,7 +233,9 @@ function Profile() {
     profile,
     followState,
     followersNo,
+    followersList,
     followingNo,
+    followingList,
     description,
     name,
   ]);
@@ -266,9 +282,33 @@ function Profile() {
           </UserAndButton>
           <ProfileStats>
             <Info>Posts: {posts.length}</Info>
-            <Info>Followers: {followersNo}</Info>
-            <Info>Following: {followingNo}</Info>
+            <Info onClick={() => setOpenedFollowersModal(true)}>
+              Followers: {followersNo}
+            </Info>
+            <Info onClick={() => setOpenedFollowingModal(true)}>
+              Following: {followingNo}
+            </Info>
           </ProfileStats>
+          <Modal
+            title="Following"
+            visible={openedFollowingModal}
+            onCancel={() => setOpenedFollowingModal(false)}
+            footer={null}
+          >
+            {followingList.map((follow, index) => (
+              <UserInModal key={index} username={follow}></UserInModal>
+            ))}
+          </Modal>
+          <Modal
+            title="Followers"
+            visible={openedFollowersModal}
+            onCancel={() => setOpenedFollowersModal(false)}
+            footer={null}
+          >
+            {followersList.map((follow, index) => (
+              <UserInModal key={index} username={follow}></UserInModal>
+            ))}
+          </Modal>
           <DescDetail>
             <b>{name}</b>
           </DescDetail>

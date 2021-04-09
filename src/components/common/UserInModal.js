@@ -4,7 +4,7 @@ import { Avatar } from "antd";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 
-const UserLikeContainer = styled.div`
+const UserContainer = styled.div`
   strong {
     margin-left: 10px;
   }
@@ -23,7 +23,7 @@ const UsernameText = styled.span`
   }
 `;
 
-const Like = ({ username }) => {
+const UserInModal = ({ username }) => {
   const [avatar, getPhotoSrcByUsername] = useState();
   const history = useHistory();
 
@@ -41,15 +41,14 @@ const Like = ({ username }) => {
 
   function redirectToProfile() {
     history.push(`/${"profile/"}` + username);
-    
   }
 
   return (
-    <UserLikeContainer>
+    <UserContainer>
       <Avatar src={avatar && avatar}>{username[0].toUpperCase()}</Avatar>
       <UsernameText onClick={redirectToProfile}>{username}</UsernameText>
-    </UserLikeContainer>
+    </UserContainer>
   );
 };
 
-export default Like;
+export default UserInModal;

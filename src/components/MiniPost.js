@@ -7,8 +7,8 @@ import {
 import styled from "styled-components";
 import firebase, { auth, db } from "utils/firebase";
 import { Button, Modal } from "antd";
-import Like from "./Like";
 import Comment from "./Comment";
+import UserInModal from "./common/UserInModal";
 
 const HeartFilledRed = styled(HeartFilled)`
   font-size: 20px;
@@ -100,7 +100,7 @@ function MiniPost({ id, imageUrl, username }) {
 
   useEffect(() => {
     postCommentsCollection
-      .orderBy("timestamp", "desc")
+      .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
         setComments(
           snapshot.docs.map((doc) => ({
@@ -155,7 +155,7 @@ function MiniPost({ id, imageUrl, username }) {
           footer={null}
         >
           {likes.map((like) => (
-            <Like key={like.id} {...like}></Like>
+            <UserInModal key={like.id} {...like}></UserInModal>
           ))}
         </Modal>
         <Modal
