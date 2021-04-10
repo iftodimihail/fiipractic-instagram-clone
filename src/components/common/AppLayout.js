@@ -3,7 +3,7 @@ import styled from "styled-components";
 import instagramLogo from "assets/instaLogo.png";
 import DropdownMenu from "components/DropdownMenu";
 import UploadModal from "components/PostUploadModal";
-import { auth } from "utils/firebase";
+import { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
 
 const AppContainer = styled.div`
@@ -24,6 +24,10 @@ const Header = styled.div`
   border-bottom: 1px solid lightgray;
   margin-bottom: 10px;
   background-color: white;
+
+  a.logo-link {
+    height: 40px;
+  }
 
   img {
     height: 40px;
@@ -50,26 +54,40 @@ const AppContent = styled.div`
 function AppLayout({ children }) {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const [username, setUsername] = useState("");
   const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
+
+      db.collection("users")
+        .doc(user?.uid)
+        .onSnapshot((snpashot) => {
+          if (snpashot.exists) setUsername(snpashot.data().userName);
+        });
     });
 
     return () => unsubscribe();
   }, [user]);
 
-  const navigateToPage = (linkTo) => {
+  const navigateToPage = (linkTo, e = null) => {
+    if (e) e.preventDefault();
     history.push(linkTo);
   };
 
   return (
     <AppContainer>
       <Header>
-        <img src={instagramLogo} alt="instagram logo" />
+        <a
+          className="logo-link"
+          href="/"
+          onClick={(e) => navigateToPage("/", e)}
+        >
+          <img src={instagramLogo} alt="instagram logo" />
+        </a>
         <DropdownMenu
-          username={user?.displayName}
+          username={username}
           openUploadModal={() => setIsOpenedModal(true)}
           navigateToPage={navigateToPage}
         />
@@ -80,8 +98,7 @@ function AppLayout({ children }) {
       <UploadModal
         isOpened={isOpenedModal}
         setIsOpen={setIsOpenedModal}
-        username={user?.displayName}
-        avatarUrl={user?.photoURL}
+        userid={user?.uid}
       />
     </AppContainer>
   );

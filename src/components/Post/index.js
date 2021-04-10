@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
 import { db } from "utils/firebase";
 
@@ -35,24 +35,44 @@ const Caption = styled.div`
   }
 `;
 
-function Post({ id, username, avatarUrl, imageUrl, caption }) {
+function Post({ id, userid, imageUrl, caption }) {
+  const [username, setUsername] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+
   const postCommentsCollection = useMemo(
     () => db.collection("posts").doc(id).collection("comments"),
     [id]
   );
 
+  useEffect(() => {
+    db.collection("users")
+      .doc(userid)
+      .onSnapshot((snapshot) => {
+        if (snapshot.exists) {
+          setUsername(snapshot.data().userName);
+          setProfilePicture(snapshot.data().profilePicture);
+        }
+      });
+  });
+
   return (
     <PostContainer>
-      <Header username={username} avatarUrl={avatarUrl} />
+      <Header username={username} avatarUrl={profilePicture} />
       <ImageContainer>
         <img src={imageUrl} alt="post" />
       </ImageContainer>
       <ActionMenu postId={id} />
-      <Caption>
-        <strong>{username}</strong>
-        {caption}
-      </Caption>
-      <CommentsSection postCommentsCollection={postCommentsCollection} />
+      {caption ? (
+        <Caption>
+          <strong>{username}</strong>
+          {caption}
+        </Caption>
+      ) : null}
+      <CommentsSection
+        postCommentsCollection={postCommentsCollection}
+        postId={id}
+        postAuthorId={userid}
+      />
       <AddComment postCommentsCollection={postCommentsCollection} />
     </PostContainer>
   );

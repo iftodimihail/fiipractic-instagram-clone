@@ -45,7 +45,7 @@ function AddComment({ postCommentsCollection }) {
     }
 
     postCommentsCollection.add({
-      username: auth.currentUser.displayName,
+      userid: auth.currentUser.uid,
       commentText,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });

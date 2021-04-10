@@ -11,9 +11,10 @@ const CenteredWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
-const SignUpContainer = styled.div`
+const SignUpContainer = styled.form`
   width: 300px;
   border: 1px solid lightgray;
   border-radius: 4px;
@@ -23,9 +24,21 @@ const SignUpContainer = styled.div`
   justify-content: center;
   padding: 24px;
 
-  > * {
+  > *:not(:last-child) {
     margin-bottom: 10px;
   }
+`;
+
+const SignUpFooter = styled.div`
+  width: 300px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  margin-top: 10px;
 `;
 
 const LogoContainer = styled.div`
@@ -50,16 +63,22 @@ function LogIn() {
 
   const history = useHistory();
 
-  const handleLogin = () => {
+  const navigateToPage = (e, linkTo) => {
+    e.preventDefault();
+    history.push(linkTo);
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(history.push("/"))
+      .then(async () => history.push("/"))
       .catch((err) => setErrorMessage(err.message));
   };
 
   return (
     <CenteredWrap>
-      <SignUpContainer>
+      <SignUpContainer onSubmit={handleLogin}>
         <LogoContainer>
           <img src={instaLogo} alt="instagram logo" />
         </LogoContainer>
@@ -76,10 +95,18 @@ function LogIn() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Error>{errorMessage}</Error>
-        <Button type="primary" onClick={handleLogin}>
+        <Button type="primary" htmlType="submit" onClick={handleLogin}>
           Log in
         </Button>
       </SignUpContainer>
+      <SignUpFooter>
+        <span>
+          Don&apos;t have an account?&nbsp;
+          <a href="/signup" onClick={(e) => navigateToPage(e, "/signup")}>
+            <strong>Sign up</strong>
+          </a>
+        </span>
+      </SignUpFooter>
     </CenteredWrap>
   );
 }

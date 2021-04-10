@@ -3,15 +3,14 @@ import { Input } from "antd";
 import firebase, { db } from "utils/firebase";
 import UploadModal from "./common/UploadModal";
 
-function PostUploadModal({ isOpened, setIsOpen, username, avatarUrl }) {
+function PostUploadModal({ isOpened, setIsOpen, userid }) {
   const [photoCaption, setPhotoCaption] = useState("");
 
   async function onSuccess(imageUrl) {
     db.collection("posts").add({
       caption: photoCaption,
       imageUrl,
-      avatarUrl,
-      username,
+      userid,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 

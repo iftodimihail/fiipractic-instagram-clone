@@ -4,6 +4,7 @@ import { CameraOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { auth, db } from "utils/firebase";
 import UploadModal from "components/common/UploadModal";
+import { useParams } from "react-router-dom";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -104,52 +105,83 @@ const PostContainer = styled.div`
 
 function Profile() {
   const [posts, setPosts] = useState([]);
+  const [profilePicture, setProfilePicture] = useState("");
+  const [profileId, setProfileId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userExists, setUserExists] = useState(true);
+  const { username } = useParams();
+
+  db.collection("users")
+    .where("userName", "==", username)
+    .onSnapshot((doc) => {
+      if (doc.empty) return setUserExists(false);
+    });
 
   const renderProfilePosts = () => {
-    return posts.map(({ imageUrl }, index) => {
-      return (
-        <PostContainer key={index}>
-          <img src={imageUrl} alt="post" />
-        </PostContainer>
-      );
-    });
+    if (posts.length)
+      return posts.map(({ imageUrl }, index) => {
+        return (
+          <PostContainer key={index}>
+            <img src={imageUrl} alt="post" />
+          </PostContainer>
+        );
+      });
+    return <div>No posts.</div>;
   };
 
   useEffect(() => {
     db.collection("posts")
       .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        const filteredPosts = snapshot.docs.filter(
-          (doc) => doc.data().username === auth.currentUser?.displayName
-        );
+      .onSnapshot(async (snapshot) => {
+        await db.collection("users").onSnapshot((userSnap) => {
+          const userid = userSnap.docs.filter(
+            (doc) => doc.data().userName === username
+          )[0]?.id;
 
-        return setPosts(
-          filteredPosts.map((post) => ({
-            id: post.id,
-            ...post.data(),
-          }))
-        );
+          setProfileId(userid);
+
+          const avatar = userSnap.docs
+            .filter((doc) => doc.data().userName === username)[0]
+            ?.data().profilePicture;
+
+          setProfilePicture(avatar);
+
+          const filteredPosts = snapshot.docs.filter(
+            (doc) => doc.data().userid === userid
+          );
+
+          return setPosts(
+            filteredPosts.map((post) => ({
+              id: post.id,
+              ...post.data(),
+            }))
+          );
+        });
       });
-  }, []);
+  }, [username]);
 
   async function onAvatarUploadSuccess(imageUrl) {
-    await auth.currentUser.updateProfile({
-      photoURL: imageUrl,
-    });
+    await db.collection("users").doc(auth.currentUser.uid).set(
+      {
+        profilePicture: imageUrl,
+      },
+      { merge: true }
+    );
   }
 
-  return (
+  return userExists ? (
     <ProfileContainer>
       <ProfileDetails>
         <AvatarWrapper>
-          <CameraIcon onClick={() => setIsModalOpen(true)} />
-          <MyAvatar size={128} src={auth.currentUser?.photoURL}>
-            {auth.currentUser?.displayName?.[0]?.toUpperCase()}
+          {profileId === auth.currentUser?.uid ? (
+            <CameraIcon onClick={() => setIsModalOpen(true)} />
+          ) : null}
+          <MyAvatar size={128} src={profilePicture}>
+            {username[0]?.toUpperCase()}
           </MyAvatar>
         </AvatarWrapper>
         <ProfileInfo>
-          <Username>{auth.currentUser?.displayName}</Username>
+          <Username>{username}</Username>
           <ProfileStats>
             {posts.length} {posts.length === 1 ? "post" : "posts"}
           </ProfileStats>
@@ -164,6 +196,8 @@ function Profile() {
         onSuccess={onAvatarUploadSuccess}
       />
     </ProfileContainer>
+  ) : (
+    <div>Profile not found.</div>
   );
 }
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import instaLogo from "assets/instaLogo.png";
 import { Button, Input } from "antd";
-import { auth } from "utils/firebase";
+import firebase, { db, auth } from "utils/firebase";
 import { useHistory } from "react-router";
 
 const CenteredWrap = styled.div`
@@ -11,9 +11,10 @@ const CenteredWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
-const SignUpContainer = styled.div`
+const SignUpContainer = styled.form`
   width: 300px;
   border: 1px solid lightgray;
   border-radius: 4px;
@@ -23,9 +24,21 @@ const SignUpContainer = styled.div`
   justify-content: center;
   padding: 24px;
 
-  > * {
+  > *:not(:last-child) {
     margin-bottom: 10px;
   }
+`;
+
+const SignUpFooter = styled.div`
+  width: 300px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  margin-top: 10px;
 `;
 
 const LogoContainer = styled.div`
@@ -51,16 +64,26 @@ function SignUp() {
 
   const history = useHistory();
 
-  const handleSignup = () => {
+  const navigateToPage = (e, linkTo) => {
+    e.preventDefault();
+    history.push(linkTo);
+  };
+
+  const handleSignup = (e) => {
+    e.preventDefault();
     auth
       .createUserWithEmailAndPassword(email, password)
       .then(async (authUser) => {
-        await authUser.user.updateProfile({
-          displayName: username,
+        await db.collection("users").doc(authUser.user.uid).set({
+          userName: username,
+          fullName: "",
+          description: "",
+          profilePicture: "",
+          userCreated: firebase.firestore.FieldValue.serverTimestamp(),
+          userLastActive: firebase.firestore.FieldValue.serverTimestamp(),
         });
-
-        history.push("/");
       })
+      .then(async () => history.push("/"))
       .catch((err) => setErrorMessage(err.message));
   };
 
@@ -78,22 +101,30 @@ function SignUp() {
         <Input
           placeholder="Email"
           type="email"
-          autocomplete="username"
+          autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           placeholder="Password"
           type="password"
-          autocomplete="new-password"
+          autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <Error>{errorMessage}</Error>
-        <Button type="primary" onClick={handleSignup}>
+        <Button type="primary" htmlType="submit" onClick={handleSignup}>
           Sign up
         </Button>
       </SignUpContainer>
+      <SignUpFooter>
+        <span>
+          Have an account?&nbsp;
+          <a href="/login" onClick={(e) => navigateToPage(e, "/login")}>
+            <strong>Log in</strong>
+          </a>
+        </span>
+      </SignUpFooter>
     </CenteredWrap>
   );
 }

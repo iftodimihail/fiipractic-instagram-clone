@@ -17,16 +17,16 @@ const ActionMenuContainer = styled.div`
   }
 `;
 
-const HeartFilledRed = styled(HeartFilled)`
-  color: #fd1d1d;
-`;
-
 const UserLikeContainer = styled.div`
   strong {
     margin-left: 10px;
   }
 
   margin-bottom: 16px;
+`;
+
+const HeartFilledRed = styled(HeartFilled)`
+  color: #fd1d1d;
 `;
 
 function ActionMenu({ postId }) {
@@ -41,15 +41,36 @@ function ActionMenu({ postId }) {
 
   useEffect(() => {
     postLikesCollection.onSnapshot((snapshot) => {
-      const docs = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      Promise.all(
+        snapshot.docs.map(async (doc) => {
+          let username = "";
+          let avatarUrl = "";
 
-      setLikes(docs);
-      setAlreadyLiked(
-        docs.find((like) => like.username === auth.currentUser?.displayName)
-      );
+          if (doc.data().userid === auth.currentUser?.uid)
+            setAlreadyLiked(doc.id);
+
+          await db
+            .collection("users")
+            .doc(doc.data().userid)
+            .get()
+            .then((userDoc) => {
+              username = userDoc.data().userName;
+              avatarUrl = userDoc.data().profilePicture;
+            });
+
+          return {
+            id: doc.id,
+            ...doc.data(),
+            username: username,
+            avatarUrl: avatarUrl,
+          };
+        })
+      ).then((docs) => {
+        setLikes(docs);
+        setAlreadyLiked(
+          docs.find((like) => like.userid === auth.currentUser?.uid)
+        );
+      });
     });
   }, [postLikesCollection]);
 
@@ -58,8 +79,7 @@ function ActionMenu({ postId }) {
       await postLikesCollection.doc(alreadyLiked.id).delete();
     } else {
       postLikesCollection.add({
-        username: auth.currentUser.displayName,
-        avatarUrl: auth.currentUser?.photoURL,
+        userid: auth.currentUser.uid,
       });
     }
   };
@@ -67,7 +87,7 @@ function ActionMenu({ postId }) {
   return (
     <ActionMenuContainer>
       <TextButton onClick={handlePostLike}>
-        {alreadyLiked?.username === auth.currentUser?.displayName ? (
+        {alreadyLiked?.userid === auth.currentUser?.uid ? (
           <HeartFilledRed />
         ) : (
           <HeartOutlined />
@@ -85,8 +105,8 @@ function ActionMenu({ postId }) {
         footer={null}
       >
         {likes.map((like) => (
-          <UserLikeContainer key={like.username}>
-            <Avatar src={like?.avatarUrl}>
+          <UserLikeContainer key={like.id}>
+            <Avatar src={like.avatarUrl}>
               {like.username[0].toUpperCase()}
             </Avatar>
             <strong>{like.username}</strong>
