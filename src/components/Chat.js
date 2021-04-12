@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Avatar, Button } from "antd";
 import styled from "styled-components";
 import firebase, { auth, db } from "utils/firebase";
+import { useHistory } from "react-router";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -21,11 +22,17 @@ const UserPhotoHeader = styled(Avatar)`
   flex-shrink: 0;
 `;
 
-const UserDetails = styled.div`
+const UserDetails = styled.a`
   display: flex;
   flex-direction: column;
   justify-content: center;
   line-height: 1.45;
+  color: inherit;
+
+  :hover {
+    color: inherit;
+    text-decoration: underline;
+  }
 
   .username {
     font-weight: 600;
@@ -155,6 +162,13 @@ function Chat({ chatid }) {
   const [messages, setMessages] = useState([]);
   const [unsentMessage, setUnsentMessage] = useState("");
 
+  const history = useHistory();
+
+  const navigateToPage = (e, linkTo) => {
+    e.preventDefault();
+    history.push(linkTo);
+  };
+
   const renderMessages = () => {
     return messages.map((message) => {
       let time = "";
@@ -244,14 +258,22 @@ function Chat({ chatid }) {
     <ChatContainer>
       {userInfo ? (
         <ChatHeader>
-          <UserPhotoHeader
-            size={40}
-            src={userInfo.profilePicture}
-            alt={userInfo.userName}
+          <a
+            href={`/profile/${userInfo.userName}`}
+            onClick={(e) => navigateToPage(e, "/profile/" + userInfo.userName)}
           >
-            {userInfo.userName?.[0]?.toUpperCase()}
-          </UserPhotoHeader>
-          <UserDetails>
+            <UserPhotoHeader
+              size={40}
+              src={userInfo.profilePicture}
+              alt={userInfo.userName}
+            >
+              {userInfo.userName?.[0]?.toUpperCase()}
+            </UserPhotoHeader>
+          </a>
+          <UserDetails
+            href={`/profile/${userInfo.userName}`}
+            onClick={(e) => navigateToPage(e, "/profile/" + userInfo.userName)}
+          >
             <div className="username">{userInfo.userName}</div>
             <div className="fullname">{userInfo.fullName}</div>
           </UserDetails>

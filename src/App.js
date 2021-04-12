@@ -14,6 +14,7 @@ import LogIn from "pages/LogIn";
 import Profile from "pages/Profile";
 import Messages from "pages/Messages";
 import AppLayout from "components/common/AppLayout";
+import Explore from "pages/Explore";
 
 function useIdle() {
   const [isIdle, setIsIdle] = useState(false);
@@ -73,6 +74,7 @@ function App() {
         <AppLayout>
           <Route exact path="/" component={Home} />
           <Route exact path="/direct" component={Messages} />
+          <Route exact path="/explore" component={Explore} />
           <Route path="/profile/:username">
             <Profile />
           </Route>

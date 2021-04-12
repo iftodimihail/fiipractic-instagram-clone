@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import instagramLogo from "assets/instaLogoNavbar.png";
-import DropdownMenu from "components/DropdownMenu";
+import NavbarMenu from "components/NavbarMenu";
 import UploadModal from "components/PostUploadModal";
 import { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
@@ -56,6 +56,7 @@ function AppLayout({ children }) {
   const [user, setUser] = useState();
   const [isOpenedModal, setIsOpenedModal] = useState(false);
   const [username, setUsername] = useState("");
+  const [userPhoto, setUserPhoto] = useState("");
   const history = useHistory();
 
   useEffect(() => {
@@ -65,15 +66,18 @@ function AppLayout({ children }) {
       db.collection("users")
         .doc(user?.uid)
         .onSnapshot((snpashot) => {
-          if (snpashot.exists) setUsername(snpashot.data().userName);
+          if (snpashot.exists) {
+            setUsername(snpashot.data().userName);
+            setUserPhoto(snpashot.data().profilePicture);
+          }
         });
     });
 
     return () => unsubscribe();
   }, [user]);
 
-  const navigateToPage = (linkTo, e = null) => {
-    if (e) e.preventDefault();
+  const navigateToPage = (e, linkTo) => {
+    e.preventDefault();
     history.push(linkTo);
   };
 
@@ -84,12 +88,13 @@ function AppLayout({ children }) {
           <a
             className="logo-link"
             href="/"
-            onClick={(e) => navigateToPage("/", e)}
+            onClick={(e) => navigateToPage(e, "/")}
           >
             <img src={instagramLogo} alt="instagram logo" />
           </a>
-          <DropdownMenu
+          <NavbarMenu
             username={username}
+            userPhoto={userPhoto}
             openUploadModal={() => setIsOpenedModal(true)}
             navigateToPage={navigateToPage}
           />
