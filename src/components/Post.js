@@ -76,7 +76,8 @@ const Caption = styled.div`
 
 const ActionMenu = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 5px;
   padding: 10px;
   align-items: flex-start;
   svg {
@@ -128,13 +129,18 @@ const CommentContainer = styled.div`
     }
   }
 `;
-
+const MoreComments = styled.div`
+  margin-left: 10px;
+  font-style: italic;
+  cursor: pointer;
+`;
 function Post({ id, username, avatarUrl, imageUrl, caption }) {
   const [likes, setLikes] = useState([]);
   const [alreadyLiked, setAlreadyLiked] = useState();
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [openedLikesModal, setOpenedLikesModal] = useState(false);
+  const [openedCommModal, setCommModal] = useState(false);
 
   const postLikesCollection = useMemo(
     () => db.collection("posts").doc(id).collection("likes"),
@@ -191,6 +197,7 @@ function Post({ id, username, avatarUrl, imageUrl, caption }) {
       username: auth.currentUser.displayName,
       commentText,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      avatarUrl: auth.currentUser?.photoURL,
     });
 
     setCommentText("");
@@ -241,12 +248,32 @@ function Post({ id, username, avatarUrl, imageUrl, caption }) {
             </UserLikeContainer>
           ))}
         </Modal>
+        <ActionButton onClick={() => comments.length > 0 && setCommModal(true)}>
+          <strong>
+            {comments.length} {comments.length === 1 ? "comment" : "comments"}
+          </strong>
+        </ActionButton>
       </ActionMenu>
+      <Modal
+        title="Comments"
+        visible={openedCommModal}
+        onCancel={() => setCommModal(false)}
+        footer={null}
+      >
+        {comments.map((comm) => (
+          <UserLikeContainer key={comm.username}>
+            <Avatar src={comm?.avatarUrl}>
+              {comm.username[0].toUpperCase()}
+            </Avatar>
+            <strong>{comm.username}</strong> {comm.commentText}
+          </UserLikeContainer>
+        ))}
+      </Modal>
       <Caption>
         <strong>{username}</strong>
         {caption}
       </Caption>
-      {comments.map((comment) => (
+      {comments.slice(0, 1).map((comment) => (
         <CommentContainer key={comment.id}>
           <div>
             <strong>{comment.username}</strong>
@@ -257,6 +284,9 @@ function Post({ id, username, avatarUrl, imageUrl, caption }) {
           </ActionButton>
         </CommentContainer>
       ))}
+      <MoreComments onClick={() => setCommModal(true)}>
+        {comments.length > 1 && "See more comments"}
+      </MoreComments>
       <AddCommentContainer>
         <CommentInput
           value={commentText}
