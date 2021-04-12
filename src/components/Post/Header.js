@@ -32,12 +32,17 @@ function Header({ username, avatarUrl }) {
 
   return (
     <PostHeader>
-      <Avatar alt={username} src={avatarUrl}>
-        {username?.[0]?.toUpperCase()}
-      </Avatar>
+      <a
+        href={`/profile/${username}`}
+        onClick={(e) => navigateToPage(e, "/profile/" + username)}
+      >
+        <Avatar alt={username} src={avatarUrl}>
+          {username?.[0]?.toUpperCase()}
+        </Avatar>
+      </a>
       <UsernameText
-        href={`/${username}`}
-        onClick={(e) => navigateToPage(e, "/" + username)}
+        href={`/profile/${username}`}
+        onClick={(e) => navigateToPage(e, "/profile/" + username)}
       >
         {username}
       </UsernameText>

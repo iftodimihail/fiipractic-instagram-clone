@@ -13,7 +13,13 @@ function DropdownMenu({ navigateToPage, username, openUploadModal }) {
       <Menu.Item key="home" onClick={() => navigateToPage("/")}>
         Home
       </Menu.Item>
-      <Menu.Item key="profile" onClick={() => navigateToPage("/" + username)}>
+      <Menu.Item key="messages" onClick={() => navigateToPage("/direct")}>
+        Messages
+      </Menu.Item>
+      <Menu.Item
+        key="profile"
+        onClick={() => navigateToPage("/profile/" + username)}
+      >
         Profile
       </Menu.Item>
       <Menu.Item key="upload" onClick={openUploadModal}>
