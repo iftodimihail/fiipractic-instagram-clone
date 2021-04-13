@@ -50,7 +50,15 @@ const ActionBarLeft = styled.div`
   height: 40px;
   display: flex;
   flex-direction: row;
-  width: 220px;
+  //width: 150px;
+`;
+
+const ActionBarRight = styled.div`
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  //width: 100px;
 `;
 
 const DeleteIcon = styled(DeleteOutlined)`
@@ -82,11 +90,18 @@ const ActionButton = styled(Button)`
   }
 `;
 
+const LikeText = styled.div`
+  font-weight: bold;
+  margin-top: 6px;
+  font-size: 16px;
+`;
+
 function MiniPost({ id, imageUrl, username }) {
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
   const [openedLikesModal, setOpenedLikesModal] = useState(false);
   const [openedCommentsModal, setOpenedCommentsModal] = useState(false);
+  const [alreadyLiked, setAlreadyLiked] = useState();
 
   const postLikesCollection = useMemo(
     () => db.collection("posts").doc(id).collection("likes"),
@@ -119,11 +134,24 @@ function MiniPost({ id, imageUrl, username }) {
       }));
 
       setLikes(docs);
+      setAlreadyLiked(
+        docs.find((like) => like.username === auth.currentUser?.displayName)
+      );
     });
   }, [postLikesCollection]);
 
   const DeletePost = async () => {
     await db.collection("posts").doc(id).delete();
+  };
+
+  const handlePostLike = async () => {
+    if (!!alreadyLiked) {
+      await postLikesCollection.doc(alreadyLiked.id).delete();
+    } else {
+      postLikesCollection.add({
+        username: auth.currentUser.displayName,
+      });
+    }
   };
 
   return (
@@ -145,9 +173,16 @@ function MiniPost({ id, imageUrl, username }) {
             <CommentImg />
           </ActionButton>
         </ActionBarLeft>
-        <ActionButton onClick={DeletePost}>
-          {auth.currentUser?.displayName === username && <DeleteIcon />}
-        </ActionButton>
+        <ActionBarRight>
+          <ActionButton onClick={handlePostLike}>
+            {alreadyLiked?.username === auth.currentUser?.displayName
+              ? <LikeText>Unlike</LikeText>
+              : <LikeText>Like</LikeText>}
+          </ActionButton>
+          <ActionButton onClick={DeletePost}>
+            {auth.currentUser?.displayName === username && <DeleteIcon />}
+          </ActionButton>
+        </ActionBarRight>
         <Modal
           title="Likes"
           visible={openedLikesModal}

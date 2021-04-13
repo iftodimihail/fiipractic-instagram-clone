@@ -18,7 +18,10 @@ Features:
 ---Posts: 
     -vizualizare numar likes/comments 
     -posibilitate de vizualizat persoanele care au commentat/au dat like prin click pe icons.
+    -posibilitate Like/Unlike
     -posibilitate delete post (click pe coș), in cazul in care suntem pe profilul nostru.
+**uneori pagina de profil sau actiunile de pe ea (like/view followers etc) pot dura cateva secunde pana se finalizeaza 
+**inca investighez motivul, posibil sa fi suprasolicitat firebase :(
 ----------------------------------
 ----------------------------------
 -----Home Page-----
@@ -47,5 +50,5 @@ Features:
 ----------------------------------
 -> Alte mentiuni:
 -- Un comentariu poate fi sters daca esti creatorul comentariului sau detinatorul postarii la care s-a facut acel comentariu.
--->Posibil sa dureze cateva secunde (5-10) pana se actualizeaza iconitele de profil in listele de likes/comments/followers/followings
+-->Posibil sa dureze cateva secunde (5-10) pana se actualizeaza iconitele de profil in listele de followers/followings
 ----------------------------------
