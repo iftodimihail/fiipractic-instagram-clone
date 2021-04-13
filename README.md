@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# App link: [fiipractic-alextoderica.web.app](https://fiipractic-alextoderica.web.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Pagini
 
-## Available Scripts
+*Pentru accesarea paginilor utilizatorul trebuie să fie autentificat. La înregistrare, atât numele de utilizator, cât și emailul nu trebuie să existe deja.*
 
-In the project directory, you can run:
+* **Home** - Afișează postările tuturor persoanelor pe care utilizatorul autentificat le urmărește și postările proprii. Dacă utilizatorul nu urmărește nicio persoană, va afișa postările tuturor persoanelor înregistrate. Dacă pagina este deschisă pe un desktop, în partea dreaptă a imaginii apar ultimii 5 utilizatori activi care nu sunt urmăriți de utilizatorul autentificat (sugestii).
 
-### `npm start`
+* **Direct** *(„Instagram Direct” / „Direct Messages”)* - Afișează conversațiile utilizatorului și mesajele din aceasta, după ce este selectată. Utilizatorul autentificat poate crea o conversație cu orice altă persoană.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* **Explore** *(„Find People”)* - Afișează o grilă cu postările tuturor persoanelor înregistrate.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* **Profile** - Afișează profilul unui utilizator, pagina fiind accesibilă fie din bara de navigare, fie la interacționarea cu numele de utilizator al oricărei persoane. Utilizatorul poate vedea profilul oricui. În profil sunt afișate:
+  * Imaginea de profil;
+  * Numele de utilizator;
+  * Unul din butoanele *„Follow”*, *„Unfollow”* sau *„Edit profile”*;
+  * Numărul de postări, persoane care urmăresc persoana sau persoanele urmărite de acea persoană;
+  * Numele întreg;
+  * Descrierea *(„bio”)*;
+  * Postările persoanei, în grilă, asemănător paginii *„Explore”*.
 
-### `npm test`
+## Diverse funcționalități implementate
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* La orice postare/apreciere/comentariu/mesaj se stochează ID-ul unic al utilizatorului și nu numele de utilizator și fotografia de profil din acel moment. Astfel, utilizatorul își poate schimba numele de utilizator și fotografia de profil în orice moment, iar schimbarea va fi reflectată peste tot.
 
-### `npm run build`
+* Am încercat să fac aplicația să fie cât mai asemănătoare cu site-ul [instagram.com](https://instagram.com/); până la urmă aplicația se numește *„instagram-clone”* pentru un motiv.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Aplicația este responsive.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* A fost implementat un sistem de mesagerie, inspirat din *„Instagram Direct”*. Utilizatorul autentificat poate crea o conversație cu oricine.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Utilizatorul poate vedea când au fost ultima oară active în aplicație persoanele cu care conversează, în pagina *„Direct”*.
 
-### `npm run eject`
+* Utilizatorul își poate schimba din propriul profil imaginea de profil, numele de utilizator, numele întreg și descrierea. Modificările se vor reflecta în întreaga aplicație.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* În pagina principală, utilizatorul vede postările doar de la persoanele urmărite de acesta, dar poate descoperi persoane noi din partea dreaptă a paginii, unde îî sunt sugerate 5 persoane; în acest moment acestea sunt ordonate descrescător după timpul în care au fost ultima oară activi.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* La grila cu postări din paginile *„Explore”* și *„Profile”*, la aducerea cursorului deasupra unei postări, sunt afișate numărul de aprecieri și de comentarii, comportament asemănător și site-ului [instagram.com](https://instagram.com/).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* La interacțiunea cu una din postările din paginile *„Explore”* și *„Profile”*, sau la interacțiunea cu butonul ce indică momentul postării (în pagina *„Home”*), utilizatorul va vedea postarea într-o pagină separată.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Este restricționată atât crearea sau modificarea de conturi cu un nume de utilizator deja existent atât la pagina de înregistrare, cât și la pagina *„Profile”*.
