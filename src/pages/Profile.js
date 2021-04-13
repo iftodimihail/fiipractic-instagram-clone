@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { auth, db } from "utils/firebase";
 import UploadModal from "components/common/UploadModal";
 import { useParams } from "react-router-dom";
+import EditProfileModal from "components/EditProfileModal";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -168,6 +169,7 @@ function Profile() {
   const [fullName, setFullName] = useState("");
   const [profileId, setProfileId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [userExists, setUserExists] = useState(true);
   const { username } = useParams();
 
@@ -222,7 +224,7 @@ function Profile() {
         snapshot.docs.filter((doc) => doc.data().follower === profileId).length
       );
     });
-  });
+  }, [profileId]);
 
   useEffect(() => {
     db.collection("posts")
@@ -309,7 +311,9 @@ function Profile() {
           <ProfileInfoHeader>
             <Username>{username}</Username>
             {profileId === auth.currentUser?.uid ? (
-              <Button>Edit profile</Button>
+              <Button onClick={() => setIsModalOpenEdit(true)}>
+                Edit profile
+              </Button>
             ) : alreadyFollowed ? (
               <Button onClick={handleFollow}>Unfollow</Button>
             ) : (
@@ -344,6 +348,15 @@ function Profile() {
         setIsOpen={setIsModalOpen}
         folderName="avatars"
         onSuccess={onAvatarUploadSuccess}
+      />
+      <EditProfileModal
+        title="Edit Profile"
+        isOpen={isModalOpenEdit}
+        setIsOpen={setIsModalOpenEdit}
+        userid={auth.currentUser.uid}
+        username={username}
+        fullName={fullName}
+        description={description}
       />
     </ProfileContainer>
   ) : (

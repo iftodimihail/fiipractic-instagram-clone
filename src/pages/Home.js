@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Post from "components/Post";
+import HomeSidebar from "components/HomeSidebar";
 import { auth, db } from "utils/firebase";
+import styled from "styled-components";
+
+const HomeContainer = styled.div`
+  display: flex;
+`;
+
+const PostList = styled.div`
+  margin-right: 28px;
+  max-width: 614px;
+  width: 100%;
+`;
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -28,7 +40,16 @@ function Home() {
       });
   }, []);
 
-  return posts.map((post) => <Post key={post.id} {...post} />);
+  return (
+    <HomeContainer>
+      <PostList>
+        {posts.map((post) => (
+          <Post key={post.id} {...post} />
+        ))}
+      </PostList>
+      <HomeSidebar />
+    </HomeContainer>
+  );
 }
 
 export default Home;

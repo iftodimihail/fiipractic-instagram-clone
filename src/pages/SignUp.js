@@ -71,20 +71,29 @@ function SignUp() {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(async (authUser) => {
-        await db.collection("users").doc(authUser.user.uid).set({
-          userName: username,
-          fullName: "",
-          description: "",
-          profilePicture: "",
-          userCreated: firebase.firestore.FieldValue.serverTimestamp(),
-          userLastActive: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-      })
-      .then(async () => history.push("/"))
-      .catch((err) => setErrorMessage(err.message));
+
+    db.collection("users")
+      .where("userName", "==", username)
+      .get()
+      .then((doc) => {
+        if (!doc.empty || username.length < 3)
+          setErrorMessage("This username is already taken / too short.");
+        else
+          auth
+            .createUserWithEmailAndPassword(email, password)
+            .then(async (authUser) => {
+              await db.collection("users").doc(authUser.user.uid).set({
+                userName: username,
+                fullName: "",
+                description: "",
+                profilePicture: "",
+                userCreated: firebase.firestore.FieldValue.serverTimestamp(),
+                userLastActive: firebase.firestore.FieldValue.serverTimestamp(),
+              });
+            })
+            .then(async () => history.push("/"))
+            .catch((err) => setErrorMessage(err.message));
+      });
   };
 
   return (

@@ -8,21 +8,27 @@ import TextButton from "components/common/TextButton";
 const ActionMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 10px 16px 0 16px;
   align-items: flex-start;
 
   svg {
     cursor: pointer;
-    font-size: 20px;
+    font-size: 24px;
+  }
+
+  .number-of-likes {
+    font-weight: 600;
   }
 `;
 
 const UserLikeContainer = styled.div`
-  strong {
-    margin-left: 10px;
+  .likes-modal-username {
+    margin-left: 14px;
+    font-weight: 600;
   }
-
-  margin-bottom: 16px;
+  & + & {
+    margin-top: 16px;
+  }
 `;
 
 const HeartFilledRed = styled(HeartFilled)`
@@ -93,10 +99,11 @@ function ActionMenu({ postId }) {
           <HeartOutlined />
         )}
       </TextButton>
-      <TextButton onClick={() => likes.length > 0 && setOpenedLikesModal(true)}>
-        <strong>
-          {likes.length} {likes.length === 1 ? "like" : "likes"}
-        </strong>
+      <TextButton
+        className="number-of-likes"
+        onClick={() => likes.length > 0 && setOpenedLikesModal(true)}
+      >
+        {likes.length} {likes.length === 1 ? "like" : "likes"}
       </TextButton>
       <Modal
         title="Likes"
@@ -109,7 +116,7 @@ function ActionMenu({ postId }) {
             <Avatar src={like.avatarUrl}>
               {like.username[0].toUpperCase()}
             </Avatar>
-            <strong>{like.username}</strong>
+            <span className="likes-modal-username">{like.username}</span>
           </UserLikeContainer>
         ))}
       </Modal>

@@ -4,16 +4,25 @@ import styled from "styled-components";
 
 import TextButton from "components/common/TextButton";
 import { auth, db } from "utils/firebase";
+import { useHistory } from "react-router";
 
 const CommentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
-  margin-bottom: 5px;
+  padding: 0 40px 0 16px;
+  margin-bottom: 4px;
+  position: relative;
+  word-break: break-word;
 
-  strong {
-    margin-right: 10px;
+  a {
+    color: inherit;
+    font-weight: 600;
+
+    :hover {
+      text-decoration: underline;
+      color: inherit;
+    }
   }
 
   svg {
@@ -27,8 +36,25 @@ const CommentContainer = styled.div`
   }
 `;
 
-function CommentsSection({ postCommentsCollection, postId, postAuthorId }) {
+const DeleteButton = styled(TextButton)`
+  position: relative;
+  font-size: 16px;
+
+  ${DeleteOutlined} {
+    position: absolute;
+    right: 16px;
+  }
+`;
+
+function CommentsSection({ postCommentsCollection, postAuthorId }) {
   const [comments, setComments] = useState([]);
+
+  const history = useHistory();
+
+  const navigateToPage = (e, linkTo) => {
+    e.preventDefault();
+    history.push(linkTo);
+  };
 
   useEffect(() => {
     postCommentsCollection.orderBy("timestamp").onSnapshot((snapshot) => {
@@ -69,13 +95,19 @@ function CommentsSection({ postCommentsCollection, postId, postAuthorId }) {
   return comments.map((comment) => (
     <CommentContainer key={comment.id}>
       <div>
-        <strong>{comment.username}</strong>
+        <a
+          href={`/profile/${comment.username}`}
+          onClick={(e) => navigateToPage(e, "/profile/" + comment.username)}
+        >
+          {comment.username}
+        </a>
+        &nbsp;
         {comment.commentText}
       </div>
       {canDeleteComment(comment.userid) ? (
-        <TextButton onClick={() => handleDeleteComment(comment.id)}>
+        <DeleteButton onClick={() => handleDeleteComment(comment.id)}>
           <DeleteOutlined />
-        </TextButton>
+        </DeleteButton>
       ) : null}
     </CommentContainer>
   ));

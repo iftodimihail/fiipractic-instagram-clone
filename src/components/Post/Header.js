@@ -7,13 +7,14 @@ const PostHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 20px;
+  padding: 16px;
+  height: 60px;
   border-bottom: 1px solid lightgray;
 `;
 
 const UsernameText = styled.a`
   font-weight: 600;
-  margin-left: 10px;
+  margin-left: 14px;
   color: inherit;
 
   :hover {
