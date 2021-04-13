@@ -120,19 +120,8 @@ const SignUp = (props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const history = useHistory();
-
-  // const handleSignUp = () => {
-  //   auth
-  //     .createUserWithEmailAndPassword(email, password)
-  //     .then(async (authUser) => {
-  //       await authUser.user.updateProfile({ displayName: username });
-  //       history.push("/");
-  //     })
-  //     .catch((err) => setError(err.massage));
-  // };
 
   const handleSignUp = async () => {
     try {
@@ -212,8 +201,7 @@ const SignUp = (props) => {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
           />
-          <Error>{error}</Error>
-          <ButtonTag type="primary" onClick={handleSignUp()}>
+          <ButtonTag type="primary" onClick={handleSignUp}>
             Sign Up
           </ButtonTag>
           <RedirectMessage>

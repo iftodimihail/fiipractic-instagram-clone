@@ -26,6 +26,7 @@ const AllStoriesContainer = styled.div`
   border-radius: 3px;
   box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.02);
   width: 600px;
+  position: relative;
 `;
 
 const CarouselProv = styled(CarouselProvider)`
@@ -41,11 +42,11 @@ const Carouseloo = styled.div`
 
 const PrevButton = styled(ButtonBack)`
   position: absolute;
-  top: 0.8%;
-  left: 18.5%;
+  top: 35%;
+  left: 1.3%;
   transform: translateY(-50%);
   border: 0;
-  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.09);
+  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.1);
   background: white;
   border-radius: 100%;
   opacity: 0.6;
@@ -56,11 +57,11 @@ const PrevButton = styled(ButtonBack)`
 
 const NextButton = styled(ButtonNext)`
   position: absolute;
-  top: 0.8%;
-  right: 43%;
+  top: 35%;
+  right: 1.3%;
   transform: translateY(-50%);
   border: 0;
-  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.09);
+  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.1);
   background: white;
   border-radius: 100%;
   opacity: 0.6;
@@ -96,7 +97,7 @@ const ViewStoriesCont = styled.div`
   width: 60%;
   height: 60%;
   padding: 83px;
-  top: -3%;
+  top: -94%;
   position: absolute;
   z-index: 999;
 `;

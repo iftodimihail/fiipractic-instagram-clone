@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { db } from "utils/firebase";
 
 const SuggestionsContainer = styled.div`
-  width: 350px;
+  width: 650px;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -16,6 +16,10 @@ const SuggestionsItem = styled.div`
   margin: 10px 0;
   font-size: 20px;
   font-weight: 600;
+  padding: 20px;
+  border-bottom: 1px solid grey;
+  letter-spacing: 0.8px;
+  color: #282828;
 `;
 
 const Title = styled.div`
@@ -23,7 +27,7 @@ const Title = styled.div`
 `;
 
 const UserInfo = styled.div`
-  min-width: 50%;
+  min-width: 90%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

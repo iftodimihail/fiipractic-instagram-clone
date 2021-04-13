@@ -38,11 +38,6 @@ const HeaderPost = ({
           username={username}
           openUserModal={() => setIsOpenedUserModal(true)}
         ></DropDownPost>
-        {/* <UserProfileModal
-            isOpened={isOpenedUserModal}
-            setIsOpen={setIsOpenedUserModal}
-            username={username}
-          ></UserProfileModal> */}
       </div>
     </PostHeader>
   );

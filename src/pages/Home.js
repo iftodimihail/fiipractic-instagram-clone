@@ -81,12 +81,6 @@ const Home = () => {
               imageUrl={noPostImage}
               username="Post"
             />
-            <Post
-              key="2"
-              postId="ourPost"
-              imageUrl={noPostImage}
-              username="Test post"
-            />
           </div>
         )}
       </div>
