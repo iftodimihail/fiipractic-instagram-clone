@@ -96,7 +96,7 @@ const ViewStoriesCont = styled.div`
   width: 60%;
   height: 60%;
   padding: 83px;
-  top: -4%;
+  top: -3%;
   position: absolute;
   z-index: 999;
 `;
