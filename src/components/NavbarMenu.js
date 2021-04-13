@@ -27,6 +27,11 @@ const NavbarMenu = styled.div`
   .profile-link {
     display: flex;
   }
+
+  @media (max-width: 735px) {
+    justify-content: space-between;
+    width: 100%;
+  }
 `;
 
 function DropdownMenu({

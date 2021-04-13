@@ -408,12 +408,16 @@ function Profile() {
   }, [username]);
 
   async function onAvatarUploadSuccess(imageUrl) {
-    await db.collection("users").doc(auth.currentUser.uid).set(
-      {
-        profilePicture: imageUrl,
-      },
-      { merge: true }
-    );
+    await db
+      .collection("users")
+      .doc(auth.currentUser.uid)
+      .set(
+        {
+          profilePicture: imageUrl,
+        },
+        { merge: true }
+      )
+      .then(() => setProfilePicture(imageUrl));
   }
 
   return userExists ? (

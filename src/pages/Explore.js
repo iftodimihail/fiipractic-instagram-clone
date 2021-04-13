@@ -28,6 +28,10 @@ const PostDetails = styled.div`
   font-weight: 600;
   font-size: 20px;
   cursor: pointer;
+
+  @media (max-width: 735px) {
+    flex-direction: column;
+  }
 `;
 
 const PostContainer = styled.a`
@@ -53,6 +57,10 @@ const HeartIcon = styled(HeartOutlined)`
 const CommentIcon = styled(CommentOutlined)`
   margin-left: 30px;
   margin-right: 5px;
+
+  @media (max-width: 735px) {
+    margin-left: 0;
+  }
 `;
 
 function Explore() {
@@ -107,9 +115,14 @@ function Explore() {
           >
             <img src={post.imageUrl} alt="post" />
             <PostDetails>
-              <HeartIcon />
-              {post.likes} <CommentIcon />
-              {post.comments}
+              <div>
+                <HeartIcon />
+                {post.likes}
+              </div>
+              <div>
+                <CommentIcon />
+                {post.comments}
+              </div>
             </PostDetails>
           </PostContainer>
         );

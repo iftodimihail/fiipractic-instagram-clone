@@ -35,6 +35,11 @@ const Header = styled.div`
     display: flex;
     align-items: center;
     padding-top: 7px;
+    margin-right: 15px;
+
+    @media (max-width: 735px) {
+      display: none;
+    }
   }
 
   img {
