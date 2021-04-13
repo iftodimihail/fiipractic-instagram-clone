@@ -8,6 +8,11 @@ const ExploreContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 30px;
+
+  @media (max-width: 735px) {
+    grid-gap: 2px;
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const PostDetails = styled.div`

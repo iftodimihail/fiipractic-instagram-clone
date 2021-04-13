@@ -23,6 +23,10 @@ const ListContainer = styled.div`
   border-right: 1px solid lightgray;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 735px) {
+    display: none;
+  }
 `;
 
 const ListHeader = styled.div`
@@ -67,7 +71,7 @@ function Messages() {
       .onSnapshot((snpashot) => {
         if (snpashot.exists) setUsername(snpashot.data().userName);
       });
-  });
+  }, []);
 
   return (
     <MessagesPageContainer>
@@ -80,7 +84,10 @@ function Messages() {
           <ChatList openedChat={openedChat} setOpenedChat={setOpenedChat} />
         </ChatListContainer>
       </ListContainer>
-      <Chat chatid={openedChat} />
+      <Chat
+        chatid={openedChat}
+        openNewChatModal={() => setIsModalOpened(true)}
+      />
       <NewChatModal
         isOpened={isModalOpened}
         setIsOpened={setIsModalOpened}

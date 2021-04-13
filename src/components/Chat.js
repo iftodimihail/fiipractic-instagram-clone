@@ -3,6 +3,7 @@ import { Avatar, Button } from "antd";
 import styled from "styled-components";
 import firebase, { auth, db } from "utils/firebase";
 import { useHistory } from "react-router";
+import { MessageOutlined, FormOutlined } from "@ant-design/icons";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -17,6 +18,19 @@ const ChatHeader = styled.div`
   padding: 0 20px;
 `;
 
+const FormIcon = styled(FormOutlined)`
+  font-size: 25px;
+  color: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: none;
+
+  @media (max-width: 735px) {
+    display: block;
+    justify-self: flex-end;
+  }
+`;
+
 const UserPhotoHeader = styled(Avatar)`
   margin-right: 10px;
   flex-shrink: 0;
@@ -28,6 +42,7 @@ const UserDetails = styled.a`
   justify-content: center;
   line-height: 1.45;
   color: inherit;
+  flex-grow: 1;
 
   :hover {
     color: inherit;
@@ -141,6 +156,27 @@ const SendButton = styled(Button)`
   }
 `;
 
+const NoChatSelected = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    font-size: 70px;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 32;
+    font-weight: 300;
+    margin-bottom: 0;
+  }
+  p {
+    font-weight: 600;
+  }
+`;
+
 function formatTimestamp(timestamp) {
   if (
     new Date().setHours(0, 0, 0, 0) === new Date(timestamp).setHours(0, 0, 0, 0)
@@ -150,14 +186,12 @@ function formatTimestamp(timestamp) {
     ("0" + timestamp.getDate()).slice(-2) +
     "." +
     ("0" + parseInt(timestamp.getMonth() + 1)).slice(-2) +
-    "." +
-    timestamp.getFullYear() +
     " " +
     timestamp.toTimeString().substr(0, 5)
   );
 }
 
-function Chat({ chatid }) {
+function Chat({ chatid, openNewChatModal }) {
   const [userInfo, setUserInfo] = useState();
   const [messages, setMessages] = useState([]);
   const [unsentMessage, setUnsentMessage] = useState("");
@@ -277,6 +311,7 @@ function Chat({ chatid }) {
             <div className="username">{userInfo.userName}</div>
             <div className="fullname">{userInfo.fullName}</div>
           </UserDetails>
+          <FormIcon onClick={openNewChatModal} />
         </ChatHeader>
       ) : null}
       <ChatContent>{renderMessages()}</ChatContent>
@@ -300,7 +335,14 @@ function Chat({ chatid }) {
       </ChatFooter>
     </ChatContainer>
   ) : (
-    <div></div>
+    <NoChatSelected>
+      <MessageOutlined />
+      <h1>Your Messages</h1>
+      <p>Send messages to a friend or any other person.</p>
+      <Button type="primary" onClick={openNewChatModal}>
+        Send Message
+      </Button>
+    </NoChatSelected>
   );
 }
 

@@ -9,6 +9,10 @@ const HomeSidebarContainer = styled.div`
   position: sticky;
   height: fit-content;
   top: 94px;
+
+  @media (max-width: 999px) {
+    display: none;
+  }
 `;
 
 const UserInfo = styled.div`
