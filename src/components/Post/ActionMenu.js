@@ -8,7 +8,7 @@ import TextButton from "components/common/TextButton";
 const ActionMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 16px 0 16px;
+  padding: 10px 16px 4px 16px;
   align-items: flex-start;
 
   svg {
@@ -18,6 +18,7 @@ const ActionMenuContainer = styled.div`
 
   .number-of-likes {
     font-weight: 600;
+    height: unset;
   }
 `;
 

@@ -53,6 +53,15 @@ const Time = styled.div`
   margin-top: 6px;
   margin-bottom: 10px;
   padding: 0 16px;
+
+  a {
+    color: inherit;
+
+    :hover {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
 `;
 
 function timeSince(timeStamp) {
@@ -112,7 +121,7 @@ function Post({ id, userid, imageUrl, caption, timestamp }) {
           setProfilePicture(snapshot.data().profilePicture);
         }
       });
-  });
+  }, [userid]);
 
   return (
     <PostContainer>
@@ -138,7 +147,14 @@ function Post({ id, userid, imageUrl, caption, timestamp }) {
         postId={id}
         postAuthorId={userid}
       />
-      <Time>{timeSince(timestamp.toDate())}</Time>
+      <Time>
+        <a
+          href={`/post/${id}`}
+          onClick={(e) => navigateToPage(e, "/post/" + id)}
+        >
+          {timeSince(timestamp.toDate())}
+        </a>
+      </Time>
       <AddComment postCommentsCollection={postCommentsCollection} />
     </PostContainer>
   );

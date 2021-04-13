@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { db } from "utils/firebase";
 import { HeartOutlined, CommentOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router";
 
 const ExploreContainer = styled.div`
   display: grid;
@@ -24,7 +25,7 @@ const PostDetails = styled.div`
   cursor: pointer;
 `;
 
-const PostContainer = styled.div`
+const PostContainer = styled.a`
   position: relative;
   aspect-ratio: 1 / 1;
   img {
@@ -51,6 +52,13 @@ const CommentIcon = styled(CommentOutlined)`
 
 function Explore() {
   const [posts, setPosts] = useState([]);
+
+  const history = useHistory();
+
+  const navigateToPage = (e, linkTo) => {
+    e.preventDefault();
+    history.push(linkTo);
+  };
 
   useEffect(() => {
     db.collection("posts")
@@ -87,7 +95,11 @@ function Explore() {
     <ExploreContainer>
       {posts.map((post, index) => {
         return (
-          <PostContainer key={index}>
+          <PostContainer
+            key={index}
+            href={`/post/${post.id}`}
+            onClick={(e) => navigateToPage(e, "/post/" + post.id)}
+          >
             <img src={post.imageUrl} alt="post" />
             <PostDetails>
               <HeartIcon />

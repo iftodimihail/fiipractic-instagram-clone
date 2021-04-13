@@ -15,6 +15,7 @@ import Profile from "pages/Profile";
 import Messages from "pages/Messages";
 import AppLayout from "components/common/AppLayout";
 import Explore from "pages/Explore";
+import PostDetails from "pages/PostDetails";
 
 function useIdle() {
   const [isIdle, setIsIdle] = useState(false);
@@ -77,6 +78,9 @@ function App() {
           <Route exact path="/explore" component={Explore} />
           <Route path="/profile/:username">
             <Profile />
+          </Route>
+          <Route path="/post/:postid">
+            <PostDetails />
           </Route>
         </AppLayout>
       </Switch>

@@ -8,7 +8,7 @@ import {
 import styled from "styled-components";
 import { auth, db } from "utils/firebase";
 import UploadModal from "components/common/UploadModal";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import EditProfileModal from "components/EditProfileModal";
 
 const ProfileContainer = styled.div`
@@ -134,7 +134,7 @@ const PostDetails = styled.div`
   cursor: pointer;
 `;
 
-const PostContainer = styled.div`
+const PostContainer = styled.a`
   position: relative;
   aspect-ratio: 1 / 1;
   img {
@@ -173,6 +173,13 @@ function Profile() {
   const [userExists, setUserExists] = useState(true);
   const { username } = useParams();
 
+  const history = useHistory();
+
+  const navigateToPage = (e, linkTo) => {
+    e.preventDefault();
+    history.push(linkTo);
+  };
+
   db.collection("users")
     .where("userName", "==", username)
     .onSnapshot((doc) => {
@@ -183,7 +190,11 @@ function Profile() {
     if (posts.length)
       return posts.map((post, index) => {
         return (
-          <PostContainer key={index}>
+          <PostContainer
+            key={index}
+            href={`/post/${post.id}`}
+            onClick={(e) => navigateToPage(e, "/post/" + post.id)}
+          >
             <img src={post.imageUrl} alt="post" />
             <PostDetails>
               <HeartIcon />
@@ -193,7 +204,7 @@ function Profile() {
           </PostContainer>
         );
       });
-    return <div>No posts.</div>;
+    return null;
   };
 
   const handleFollow = async () => {
@@ -359,9 +370,7 @@ function Profile() {
         description={description}
       />
     </ProfileContainer>
-  ) : (
-    <div>Profile not found.</div>
-  );
+  ) : null;
 }
 
 export default Profile;
