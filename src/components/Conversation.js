@@ -9,7 +9,7 @@ const ConversationComponent = styled.div`
 `;
 
 const TitleComponent = styled.div`
-  height: 70px;
+  height: 80px;
   border-bottom: 1px solid lightgray;
   display: flex;
   flex-direction: row;

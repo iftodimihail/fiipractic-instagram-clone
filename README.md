@@ -41,6 +41,7 @@ Features:
         -- icon 'inbox' de pe header
 
 --Lista cu utlizatori
+--Search User Bar
 --Conversatia cu un utilizator selectat
 --Un utilizator apare in lista daca este urmarit si te urmareste.
 ----------------------------------
